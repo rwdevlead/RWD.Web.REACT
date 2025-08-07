@@ -1,0 +1,45 @@
+<!-- test/frontend/index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>API Test</title>
+  </head>
+  <body>
+    <h2>Send Test Email</h2>
+    <form id="emailForm">
+      <input name="name" placeholder="Name" />
+      <input name="email" placeholder="Email" />
+      <input name="title" placeholder="Title" />
+      <textarea name="message" placeholder="Message"></textarea>
+      <button type="submit">Send</button>
+    </form>
+    <pre id="response"></pre>
+
+    <script>
+      document
+        .getElementById("emailForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const form = new FormData(e.target);
+          const data = Object.fromEntries(form.entries());
+          data.captchaToken = "";
+
+          try {
+            const res = await fetch("http://localhost:3000/api/email", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data),
+            });
+            const result = await res.json();
+            document.getElementById("response").innerText = JSON.stringify(
+              result,
+              null,
+              2
+            );
+          } catch (err) {
+            document.getElementById("response").innerText = err.message;
+          }
+        });
+    </script>
+  </body>
+</html>

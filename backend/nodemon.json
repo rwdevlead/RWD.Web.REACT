@@ -1,0 +1,6 @@
+{
+  "watch": ["api"],
+  "ext": "js,json",
+  "ignore": ["**/test/*", "node_modules"],
+  "exec": "node api/index.js"
+}
