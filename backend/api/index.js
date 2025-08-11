@@ -32,9 +32,24 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", version: "1.0.0" });
 });
 
-// ✅ Email POST endpoint
+// Email POST endpoint
 app.post("/api/email", validate(emailSchema), async (req, res) => {
   const { name, message, title, email, captchaToken } = req.validatedBody;
+
+  // Verify CAPTCHA with Google
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+  const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captchaToken}`;
+
+  const response = await fetch(verificationURL, { method: "POST" });
+  const reCapdata = await response.json();
+
+  if (!reCapdata.success) {
+    return res.status(400).json({
+      message: "CAPTCHA failed, try again.",
+      token: captchaToken,
+      secretKey: secretKey ? secretKey.slice(-5) : "missing",
+    });
+  }
 
   const data = {
     service_id: process.env.EMAILJS_SERVICE_ID,

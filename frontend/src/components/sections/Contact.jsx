@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { RevealOnScroll } from "../RevealOnScroll";
 import debounce from "lodash.debounce";
 import axios from "axios";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export const Contact = () => {
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -13,50 +15,54 @@ export const Contact = () => {
 
   const [status, setStatus] = useState({ success: null, error: null });
   const [formDisabled, setFormDisabled] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(null);
+
+  const handleCaptchaChange = (token) => {
+    setCaptchaToken(token); // Store token for submission
+  };
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = debounce(async (e) => {
-    e.preventDefault();
-
+  // Define the debounced async function *once*
+  const debouncedFn = debounce(async (payload) => {
     try {
-      const payload = {
-        ...form,
-        captchaToken: "",
-      };
-
-      // send request
       const res = await axios.post("http://localhost:3000/api/email", payload);
-
-      // log response
       console.log(res);
-
-      // update status
       setStatus({ success: true, error: null });
-
-      // Clear the form
-      setForm({
-        name: "",
-        email: "",
-        title: "",
-        message: "",
-      });
-
-      // Disable further submissions (one only)
+      setForm({ name: "", email: "", title: "", message: "" });
       setFormDisabled(true);
     } catch (err) {
-      // log out error
       console.error(err);
-      // update status
-
       setStatus({
         success: false,
         error:
           "There was a problem sending your message. Please try again later.",
       });
     }
-  }, 1000); // 1-second debounce (avoids double click)
+  }, 500);
+
+  // Memoize the handler that calls the debounced function
+  const debouncedSubmit = useCallback(
+    (payload) => {
+      debouncedFn(payload);
+    },
+    [debouncedFn] // Note: lodash debounce returns the same function always, so this is fine
+  );
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!captchaToken) {
+      alert("Please complete the CAPTCHA");
+      return;
+    }
+    const payload = {
+      ...form,
+      captchaToken,
+    };
+    debouncedSubmit(payload);
+  };
 
   function getDate() {
     const today = new Date();
@@ -134,6 +140,12 @@ export const Contact = () => {
                 onChange={handleChange}
               />
             </div>
+
+            {siteKey ? (
+              <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
+            ) : (
+              <p>Loading CAPTCHA...</p>
+            )}
 
             <button
               type="submit"
