@@ -1,0 +1,9 @@
+{
+  "name": "backend",
+  "main": "api/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node api/index.js",
+    "dev:watch": "nodemon api/index.js"
+  }
+}
