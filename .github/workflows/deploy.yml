@@ -1,0 +1,83 @@
+name: Test, Scan & Deploy Monorepo to Vercel
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test_scan_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1️⃣ Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Node
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # 3️⃣ Install root dependencies (if any)
+      - name: Install root dependencies
+        run: npm ci
+
+      # 4️⃣ Install backend dependencies
+      - name: Install backend dependencies
+        run: npm ci
+        working-directory: backend
+
+      # 5️⃣ Install frontend dependencies
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+
+      # 6️⃣ Run backend tests
+      - name: Run backend tests
+        run: npm test
+        working-directory: test/backend
+        env:
+          RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
+          API_URL: ${{ secrets.API_URL }}
+
+      # 7️⃣ Run frontend tests
+      - name: Run frontend tests
+        run: npm test
+        working-directory: test/frontend
+        env:
+          RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
+          API_URL: ${{ secrets.API_URL }}
+
+      # 8️⃣ Security scan
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+      # 9️⃣ Install Vercel CLI
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      # 🔟 Sync secrets to Vercel (Development env)
+      - name: Sync environment variables to Vercel
+        run: |
+          vercel env add RECAPTCHA_SECRET_KEY development <<< "$RECAPTCHA_SECRET_KEY"
+          vercel env add API_URL development <<< "$API_URL"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
+          API_URL: ${{ secrets.API_URL }}
+
+      # 1️⃣1️⃣ Deploy to Vercel (Production)
+      - name: Deploy to Vercel
+        run: vercel --prod --confirm --cwd ./frontend
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
