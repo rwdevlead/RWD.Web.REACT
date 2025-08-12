@@ -38,7 +38,7 @@ jobs:
       # 6️⃣ Run backend tests
       - name: Install root devDependencies
         run: npm install
-      - name: Run workspace tests/backend
+      - name: Run workspace tests
         run: npm run test
         working-directory: backend # or frontend
 
