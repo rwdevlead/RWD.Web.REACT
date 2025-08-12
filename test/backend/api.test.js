@@ -1,5 +1,4 @@
 import { describe, it, expect } from "vitest";
-import request from "supertest";
 import app from "../../backend/api/index.js";
 
 describe("Backend API", () => {
