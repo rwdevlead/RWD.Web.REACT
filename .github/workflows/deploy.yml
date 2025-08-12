@@ -37,11 +37,11 @@ jobs:
       - name: Check Vitest install
         run: ls node_modules/.bin && ls node_modules/vitest
       # 6️⃣ Run backend tests
-      - name: Run tests
+      - name: Install root devDependencies
+        run: npm install
+      - name: Run workspace tests
         run: npm run test
-        env:
-          RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
-          API_URL: ${{ secrets.API_URL }}
+        working-directory: backend # or frontend
 
       # 7️⃣ Run frontend tests (commented out for now)
       # - name: Run frontend tests
