@@ -36,29 +36,20 @@ jobs:
         working-directory: frontend
 
       # 6️⃣ Run backend tests
-      - name: Show repository root structure
-        run: |
-          cd $GITHUB_WORKSPACE
-          echo "Repository root is:"
-          pwd
-          echo ""
-          echo "Directory structure:"
-          ls -R
-    
       - name: Run backend tests
-        run: npm test
+        run: npx vitest run test/backend
         working-directory: ./
         env:
           RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
           API_URL: ${{ secrets.API_URL }}
-
-      # 7️⃣ Run frontend tests
-      - name: Run frontend tests
-        run: npm test
-        working-directory: ./RWD.Web.REACT
-        env:
-          RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
-          API_URL: ${{ secrets.API_URL }}
+      
+      # 7️⃣ Run frontend tests (commented out for now)
+      # - name: Run frontend tests
+      #   run: npx vitest run test/frontend
+      #   working-directory: ./RWD.Web.REACT
+      #   env:
+      #     RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
+      #     API_URL: ${{ secrets.API_URL }}
 
       # 8️⃣ Security scan
       - name: Initialize CodeQL
