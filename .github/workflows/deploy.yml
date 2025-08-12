@@ -38,7 +38,7 @@ jobs:
       # 6️⃣ Run backend tests
       - name: Run backend tests
         run: npm test
-        working-directory: .
+        working-directory: ./RWD.Web.REACT
         env:
           RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
           API_URL: ${{ secrets.API_URL }}
@@ -46,7 +46,7 @@ jobs:
       # 7️⃣ Run frontend tests
       - name: Run frontend tests
         run: npm test
-        working-directory: ./RWD.WEB.REACT
+        working-directory: ./RWD.Web.REACT
         env:
           RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
           API_URL: ${{ secrets.API_URL }}
