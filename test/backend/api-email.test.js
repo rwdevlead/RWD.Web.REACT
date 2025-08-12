@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import request from "supertest";
 import app from "../../backend/api/index.js";
 import axios from "axios";
 
