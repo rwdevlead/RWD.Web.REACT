@@ -36,6 +36,9 @@ jobs:
         working-directory: frontend
 
       # 6️⃣ Run backend tests
+      - name: Show directory structure
+        run: ls -R
+  
       - name: Run backend tests
         run: npm test
         working-directory: ./RWD.WEB.REACT
