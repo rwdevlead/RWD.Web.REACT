@@ -37,7 +37,7 @@ jobs:
 
       # 6️⃣ Run backend tests
       - name: Run backend tests
-        run: npx vitest run test/backend
+        run: npx vitest run
         working-directory: ./
         env:
           RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
