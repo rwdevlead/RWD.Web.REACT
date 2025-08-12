@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "node api/index.js",
-    "dev:watch": "nodemon api/index.js"
+    "dev:watch": "nodemon api/index.js",
+    "test": "vitest"
   }
 }
