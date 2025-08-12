@@ -34,8 +34,7 @@ jobs:
       # - name: Install frontend dependencies
       #   run: npm ci
       #   working-directory: frontend
-      - name: Check Vitest install
-        run: ls node_modules/.bin && ls node_modules/vitest
+
       # 6️⃣ Run backend tests
       - name: Install root devDependencies
         run: npm install
