@@ -1,9 +1,10 @@
+/// vitest.config.js
 import { defineConfig } from "vitest/config";
 
-export default {
+export default defineConfig({
   test: {
-    globals: true, // So you can use describe/it/expect without imports
-    setupFiles: ["./test/backend/vitest.setup.js"], // Load the CAPTCHA mock globally
+    globals: true,
+    setupFiles: "./test/vitest.setup.js",
     environment: "node",
   },
-};
+});
