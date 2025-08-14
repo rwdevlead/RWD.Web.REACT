@@ -76,6 +76,11 @@ jobs:
           fi
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          
+      - name: Test Vercel Token Authentication
+        run: vercel whoami
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     
       - name: Sync environment variables to Vercel
         run: |
