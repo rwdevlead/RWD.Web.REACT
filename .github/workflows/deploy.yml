@@ -78,7 +78,7 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           
       - name: Test Vercel Token Authentication
-        run: vercel whoami
+        run: vercel whoami --token ${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     
