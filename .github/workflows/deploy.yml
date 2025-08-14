@@ -38,8 +38,8 @@ jobs:
       #   working-directory: frontend
 
       # 6️⃣ Run backend tests
-      - name: Install root devDependencies
-        run: npm install
+      #- name: Install root devDependencies
+      #  run: npm install
       - name: Run workspace tests
         run: npm run test
         working-directory: test/backend # or frontend
@@ -69,13 +69,13 @@ jobs:
       - name: Sync environment variables to Vercel
         run: |
           vercel env add RECAPTCHA_SECRET_KEY development <<< "$RECAPTCHA_SECRET_KEY"
-          vercel env add API_URL development <<< "$API_URL"
+          # vercel env add API_URL development <<< "$API_URL"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
-          API_URL: ${{ secrets.API_URL }}
+          # API_URL: ${{ secrets.API_URL }}
 
       # 1️⃣1️⃣ Deploy to Vercel (Production)
       - name: Deploy to Vercel
