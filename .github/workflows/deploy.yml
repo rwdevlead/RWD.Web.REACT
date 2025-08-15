@@ -84,8 +84,8 @@ jobs:
     
       - name: Sync environment variables to Vercel
         run: |
-          vercel env add RECAPTCHA_SECRET_KEY development <<< "$RECAPTCHA_SECRET_KEY" --token ${{ secrets.VERCEL_TOKEN }}
-          # vercel env add API_URL development <<< "$API_URL"
+          vercel env add RECAPTCHA_SECRET_KEY preview <<< "$RECAPTCHA_SECRET_KEY" --token ${{ secrets.VERCEL_TOKEN }}
+          # vercel env add API_URL preview <<< "$API_URL"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -95,6 +95,6 @@ jobs:
 
       # 1️⃣1️⃣ Deploy to Vercel (Production)
       - name: Deploy to Vercel
-        run: vercel --prod --confirm --cwd ./frontend
+        run: vercel --preview --confirm --cwd ./frontend
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
