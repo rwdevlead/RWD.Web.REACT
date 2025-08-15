@@ -77,11 +77,10 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
-      - name: Export VERCEL_TOKEN
-        run: export VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }}
-  
       - name: Test Vercel Token Authentication
-        run: vercel whoami 
+        run: |
+          export VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN }}
+          vercel whoami 
         env:
           VERCEL_TOKEN: ${VERCEL_TOKEN}"
     
