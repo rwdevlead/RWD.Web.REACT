@@ -86,7 +86,7 @@ jobs:
       - name: Sync environment variables to Vercel
         run: |
           vercel env rm RECAPTCHA_SECRET_KEY preview --yes --token ${{ secrets.VERCEL_TOKEN }}
-          vercel env add RECAPTCHA_SECRET_KEY preview --yes "$RECAPTCHA_SECRET_KEY" --token ${{ secrets.VERCEL_TOKEN }}        
+          vercel env add RECAPTCHA_SECRET_KEY preview "$RECAPTCHA_SECRET_KEY" --token ${{ secrets.VERCEL_TOKEN }}        
           # vercel env add preview <<< "$RECAPTCHA_SECRET_KEY" --token ${{ secrets.VERCEL_TOKEN }}
           # vercel env add API_URL preview <<< "$API_URL"
         env:
