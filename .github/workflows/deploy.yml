@@ -82,16 +82,20 @@ jobs:
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-    
+          
       - name: Sync environment variables to Vercel
         run: |
-          echo ${{ secrets.RECAPTCHA_SECRET_KEY }} | 
-          vercel env add RECAPTCHA_SECRET_KEY production --token=${{ secrets.VERCEL_TOKEN }}
-          # vercel env rm TEST_KEY --yes --token ${{ secrets.VERCEL_TOKEN }}
-          # vercel env add TEST_KEY --token ${{ secrets.VERCEL_TOKEN }} 
+          # Remove and re-add in production
+          vercel env rm RECAPTCHA_SECRET_KEY production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          echo ${{ secrets.RECAPTCHA_SECRET_KEY }} | vercel env add RECAPTCHA_SECRET_KEY production --token=${{ secrets.VERCEL_TOKEN }}
+      
+          # Remove and re-add in preview
+          vercel env rm RECAPTCHA_SECRET_KEY preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          echo ${{ secrets.RECAPTCHA_SECRET_KEY }} | vercel env add RECAPTCHA_SECRET_KEY preview --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+         
 
       # 1️⃣1️⃣ Deploy to Vercel (Production)
       - name: Deploy to Vercel
