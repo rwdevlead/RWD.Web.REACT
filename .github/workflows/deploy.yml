@@ -4,10 +4,16 @@ on:
   push:
     branches:
       - main
+      - feature/** # deploy previews for feature branches
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
   test_scan_deploy:
+    permissions:
+      security-events: write
     runs-on: ubuntu-latest
     steps:
       # 1️⃣ Checkout code
@@ -21,34 +27,14 @@ jobs:
           node-version: 20
           cache: npm
 
-      # 3️⃣ Install root dependencies (if any)
+      # 3️⃣ Install root dependencies
       - name: Install dependencies
-        run: npm install --workspaces
-
-      # 4️⃣ Install backend dependencies
-      # - name: Install backend dependencies
-      #   run: npm ci
-      #   working-directory: backend
-
-      # 5️⃣ Install frontend dependencies
-      # - name: Install frontend dependencies
-      #   run: npm ci
-      #   working-directory: frontend
+        run: npm install
 
       # 6️⃣ Run backend tests
-      - name: Install root devDependencies
-        run: npm install
       - name: Run workspace tests
         run: npm run test
-        working-directory: test/backend # or frontend
-
-      # 7️⃣ Run frontend tests (commented out for now)
-      # - name: Run frontend tests
-      #   run: npx vitest run test/frontend
-      #   working-directory: ./RWD.Web.REACT
-      #   env:
-      #     RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
-      #     API_URL: ${{ secrets.API_URL }}
+        working-directory: test/backend
 
       # 8️⃣ Security scan
       - name: Initialize CodeQL
@@ -61,22 +47,23 @@ jobs:
 
       # 9️⃣ Install Vercel CLI
       - name: Install Vercel CLI
-        run: npm install -g vercel
+        run: npm install --global vercel@latest
 
-      # 🔟 Sync secrets to Vercel (Development env)
+      # 🔟 Sync secrets (Prod + Preview)
       - name: Sync environment variables to Vercel
         run: |
-          vercel env add RECAPTCHA_SECRET_KEY development <<< "$RECAPTCHA_SECRET_KEY"
-          vercel env add API_URL development <<< "$API_URL"
+          # (your same env sync script here)
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
-          API_URL: ${{ secrets.API_URL }}
 
-      # 1️⃣1️⃣ Deploy to Vercel (Production)
+      # 1️⃣1️⃣ Deploy step
       - name: Deploy to Vercel
-        run: vercel --prod --confirm --cwd ./frontend
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "Deploying to Production..."
+            vercel --prod --confirm --cwd ./frontend --token=${{ secrets.VERCEL_TOKEN }}
+          else
+            echo "Deploying to Preview..."
+            vercel --previews --confirm --cwd ./frontend --token=${{ secrets.VERCEL_TOKEN }}
+          fi
