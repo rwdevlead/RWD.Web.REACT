@@ -103,10 +103,10 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "Deploying to Production..."
-            vercel --prod --confirm --token=${{ secrets.VERCEL_TOKEN }}
+            vercel deploy --target=production  --confirm --token=${{ secrets.VERCEL_TOKEN }}
           else
             echo "Deploying to Preview..."
-            vercel --preview --confirm  --token=${{ secrets.VERCEL_TOKEN }}
+            vercel deploy --target=preview  --confirm  --token=${{ secrets.VERCEL_TOKEN }}
           fi
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
