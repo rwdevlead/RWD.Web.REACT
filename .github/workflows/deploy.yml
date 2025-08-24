@@ -5,13 +5,10 @@ on:
     branches:
       - main
       - feature/** # deploy previews for feature branches
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
-  test_scan_deploy:
+  vercel_deploy:
     permissions:
       security-events: write
     runs-on: ubuntu-latest
@@ -31,39 +28,133 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 6️⃣ Run backend tests
+      # 4️⃣ Run backend tests
       - name: Run workspace tests
         run: npm run test
         working-directory: test/backend
 
-      # 8️⃣ Security scan
+      # 5️⃣ Security scans
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: javascript
 
-      - name: Perform CodeQL Analysis
+      - name: Perform CodeQL Analysi
         uses: github/codeql-action/analyze@v3
 
-      # 9️⃣ Install Vercel CLI
+      # 6️⃣ Install Vercel CLI
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
-      # 🔟 Sync secrets (Prod + Preview)
+      # 7️⃣ Sync secrets (Prod + Preview)
       - name: Sync environment variables to Vercel
         run: |
-          # (your same env sync script here)
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "Syncing Production Secrets ..."
+            vercel env rm VITE_RECAPTCHA_SITE_KEY production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ secrets.VITE_RECAPTCHA_SITE_KEY }} | vercel env add VITE_RECAPTCHA_SITE_KEY production --token=${{ secrets.VERCEL_TOKEN }}
+
+            vercel env rm EMAILJS_ACCESSTOKEN production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ secrets.EMAILJS_ACCESSTOKEN }} | vercel env add EMAILJS_ACCESSTOKEN production --token=${{ secrets.VERCEL_TOKEN }}
+
+            vercel env rm EMAILJS_PUBLICKEY production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ secrets.EMAILJS_PUBLICKEY }} | vercel env add EMAILJS_PUBLICKEY production --token=${{ secrets.VERCEL_TOKEN }}
+
+            vercel env rm EMAILJS_SERVICE_ID production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ secrets.EMAILJS_SERVICE_ID }} | vercel env add EMAILJS_SERVICE_ID production --token=${{ secrets.VERCEL_TOKEN }}
+
+            vercel env rm EMAILJS_TEMPLATE_ID production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ secrets.EMAILJS_TEMPLATE_ID }} | vercel env add EMAILJS_TEMPLATE_ID production --token=${{ secrets.VERCEL_TOKEN }}
+
+            vercel env rm EMAILJS_URL production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ vars.EMAILJS_URL }} | vercel env add EMAILJS_URL production --token=${{ secrets.VERCEL_TOKEN }}
+          else
+            echo "Syncing Preview Secrets ..."
+            vercel env rm VITE_RECAPTCHA_SITE_KEY preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ secrets.VITE_RECAPTCHA_SITE_KEY }} | vercel env add VITE_RECAPTCHA_SITE_KEY preview --token=${{ secrets.VERCEL_TOKEN }}
+
+            vercel env rm EMAILJS_ACCESSTOKEN preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ secrets.EMAILJS_ACCESSTOKEN }} | vercel env add EMAILJS_ACCESSTOKEN preview --token=${{ secrets.VERCEL_TOKEN }}
+
+            vercel env rm EMAILJS_PUBLICKEY preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ secrets.EMAILJS_PUBLICKEY }} | vercel env add EMAILJS_PUBLICKEY preview --token=${{ secrets.VERCEL_TOKEN }}
+
+            vercel env rm EMAILJS_SERVICE_ID preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ secrets.EMAILJS_SERVICE_ID }} | vercel env add EMAILJS_SERVICE_ID preview --token=${{ secrets.VERCEL_TOKEN }}
+
+            vercel env rm EMAILJS_TEMPLATE_ID preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ secrets.EMAILJS_TEMPLATE_ID }} | vercel env add EMAILJS_TEMPLATE_ID preview --token=${{ secrets.VERCEL_TOKEN }}
+
+            vercel env rm EMAILJS_URL preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ vars.EMAILJS_URL }} | vercel env add EMAILJS_URL preview --token=${{ secrets.VERCEL_TOKEN }}
+          fi
+
+          # # === Production ===
+          # vercel env rm VITE_RECAPTCHA_SITE_KEY production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          # echo ${{ secrets.VITE_RECAPTCHA_SITE_KEY }} | vercel env add VITE_RECAPTCHA_SITE_KEY production --token=${{ secrets.VERCEL_TOKEN }}
+
+          # vercel env rm EMAILJS_ACCESSTOKEN production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          # echo ${{ secrets.EMAILJS_ACCESSTOKEN }} | vercel env add EMAILJS_ACCESSTOKEN production --token=${{ secrets.VERCEL_TOKEN }}
+
+          # vercel env rm EMAILJS_PUBLICKEY production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          # echo ${{ secrets.EMAILJS_PUBLICKEY }} | vercel env add EMAILJS_PUBLICKEY production --token=${{ secrets.VERCEL_TOKEN }}
+
+          # vercel env rm EMAILJS_SERVICE_ID production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          # echo ${{ secrets.EMAILJS_SERVICE_ID }} | vercel env add EMAILJS_SERVICE_ID production --token=${{ secrets.VERCEL_TOKEN }}
+
+          # vercel env rm EMAILJS_TEMPLATE_ID production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          # echo ${{ secrets.EMAILJS_TEMPLATE_ID }} | vercel env add EMAILJS_TEMPLATE_ID production --token=${{ secrets.VERCEL_TOKEN }}
+
+          # vercel env rm EMAILJS_URL production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          # echo ${{ vars.EMAILJS_URL }} | vercel env add EMAILJS_URL production --token=${{ secrets.VERCEL_TOKEN }}
+
+
+          # === Preview ===
+          # vercel env rm VITE_RECAPTCHA_SITE_KEY preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          # echo ${{ secrets.VITE_RECAPTCHA_SITE_KEY }} | vercel env add VITE_RECAPTCHA_SITE_KEY preview --token=${{ secrets.VERCEL_TOKEN }}
+
+          # vercel env rm EMAILJS_ACCESSTOKEN preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          # echo ${{ secrets.EMAILJS_ACCESSTOKEN }} | vercel env add EMAILJS_ACCESSTOKEN preview --token=${{ secrets.VERCEL_TOKEN }}
+
+          # vercel env rm EMAILJS_PUBLICKEY preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          # echo ${{ secrets.EMAILJS_PUBLICKEY }} | vercel env add EMAILJS_PUBLICKEY preview --token=${{ secrets.VERCEL_TOKEN }}
+
+          # vercel env rm EMAILJS_SERVICE_ID preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          # echo ${{ secrets.EMAILJS_SERVICE_ID }} | vercel env add EMAILJS_SERVICE_ID preview --token=${{ secrets.VERCEL_TOKEN }}
+
+          # vercel env rm EMAILJS_TEMPLATE_ID preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          # echo ${{ secrets.EMAILJS_TEMPLATE_ID }} | vercel env add EMAILJS_TEMPLATE_ID preview --token=${{ secrets.VERCEL_TOKEN }}
+
+          # vercel env rm EMAILJS_URL preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          # echo ${{ vars.EMAILJS_URL }} | vercel env add EMAILJS_URL preview --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      # 1️⃣1️⃣ Deploy step
+      # 8️⃣ Deploy step
+      # - name: Pull Vercel Environment Information
+      #   run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+      # - name: Build Project Artifacts
+      #   run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+      # - name: Deploy Project Artifacts to Vercel
+      #   run: vercel deploy --prebuilt --target=preview --token=${{ secrets.VERCEL_TOKEN }}
+      #   env:
+      #     VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      #     VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
       - name: Deploy to Vercel
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "Deploying to Production..."
-            vercel --prod --confirm --cwd ./frontend --token=${{ secrets.VERCEL_TOKEN }}
+            vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+            vercel build --token=${{ secrets.VERCEL_TOKEN }}
+            vercel deploy --prebuilt --target=production --token=${{ secrets.VERCEL_TOKEN }}
           else
             echo "Deploying to Preview..."
-            vercel --previews --confirm --cwd ./frontend --token=${{ secrets.VERCEL_TOKEN }}
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+            vercel build --token=${{ secrets.VERCEL_TOKEN }}
+            vercel deploy --prebuilt --target=preview --token=${{ secrets.VERCEL_TOKEN }}
           fi
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
