@@ -82,6 +82,7 @@ export const Contact = () => {
           <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent ">
             Get in Touch
           </h2>
+          <h2>Get in Touch</h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <input type="hidden" name="time" value={getDate()} />

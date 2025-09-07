@@ -11,12 +11,15 @@ export const Projects = () => {
           <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent ">
             Featured Projects
           </h2>
+          <h2>Featured Projects</h2>
+
           <div className="grid gird-cols-1 md:grid-cols-2 gap-6">
             <div
               className="p-6 rounded-xl border border-white/10 hover:-translate-y-1 hover:border-blue-500/30
                          hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition "
             >
               <h3 className="text-xl font-bold mb-2">Cloud Platform</h3>
+              <h3>Cloud Platform CSS</h3>
               <p className="text-gray-400 mb-4">
                 Scalable cloud infrastructure management with real-time
                 monitoring and automated scaling.
@@ -48,6 +51,7 @@ export const Projects = () => {
                          hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition "
             >
               <h3 className="text-xl font-bold mb-2">Cloud Platform</h3>
+              <h3>Cloud Platform CSS</h3>
               <p className="text-gray-400 mb-4">
                 Scalable cloud infrastructure management with real-time
                 monitoring and automated scaling.
@@ -79,6 +83,7 @@ export const Projects = () => {
                          hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition "
             >
               <h3 className="text-xl font-bold mb-2">Cloud Platform</h3>
+              <h3>Cloud Platform CSS</h3>
               <p className="text-gray-400 mb-4">
                 Scalable cloud infrastructure management with real-time
                 monitoring and automated scaling.
@@ -110,6 +115,7 @@ export const Projects = () => {
                          hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition "
             >
               <h3 className="text-xl font-bold mb-2">Cloud Platform</h3>
+              <h3>Cloud Platform CSS</h3>
               <p className="text-gray-400 mb-4">
                 Scalable cloud infrastructure management with real-time
                 monitoring and automated scaling.

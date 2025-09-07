@@ -1,16 +1,56 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 html,
 body {
   margin: 0;
   padding: 0;
   font-family: "Space Grotesk", sans-serif;
-  background-color: #0a0a0a;
-  color: #f3f4f6;
 }
 
+/* Global responsive headings with dark mode variants */
+@layer base {
+  h1 {
+    @apply text-4xl font-bold leading-tight mb-4 text-blue-600 dark:text-blue-300;
+    @apply sm:text-5xl md:text-6xl lg:text-7xl;
+    @apply transition-colors duration-500 ease-in-out;
+  }
+  h2 {
+    @apply text-3xl font-semibold leading-snug mb-3 text-pink-500 dark:text-pink-300;
+    @apply sm:text-4xl md:text-5xl;
+    @apply transition-colors duration-500 ease-in-out;
+  }
+  h3 {
+    @apply text-2xl font-semibold leading-snug mb-2 text-purple-500 dark:text-purple-300;
+    @apply sm:text-3xl md:text-4xl;
+    @apply transition-colors duration-500 ease-in-out;
+  }
+  h4 {
+    @apply text-xl font-medium mb-2 text-green-600 dark:text-green-300;
+    @apply sm:text-2xl md:text-3xl;
+    @apply transition-colors duration-500 ease-in-out;
+  }
+  h5 {
+    @apply text-lg font-medium mb-1 text-orange-500 dark:text-orange-300;
+    @apply sm:text-xl;
+    @apply transition-colors duration-500 ease-in-out;
+  }
+  h6 {
+    @apply text-base font-medium text-gray-600 dark:text-gray-300;
+    @apply sm:text-lg;
+    @apply transition-colors duration-500 ease-in-out;
+  }
+
+  /* Smooth color transitions globally */
+  * {
+    @apply transition-colors duration-300;
+  }
+}
+
+/* Utilities */
 @layer utilities {
-  /* used for blinking curser // TODO change blink rate */
+  /* blinking cursor */
   @keyframes blink {
     0%,
     100% {
@@ -24,7 +64,7 @@ body {
     animation: blink 0.8s step-end infinite;
   }
 
-  /* used for loading opening message // TODO change rate of load */
+  /* loading bar animation */
   @keyframes loading {
     0% {
       transform: translateX(-100%);
@@ -38,12 +78,12 @@ body {
   }
 }
 
+/* Reveal animations */
 .reveal {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.7s ease transform 0.7s ease;
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
-
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
