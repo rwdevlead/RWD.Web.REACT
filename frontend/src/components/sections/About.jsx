@@ -5,10 +5,7 @@ export const About = () => {
   const backendSkill = ["Azure", "MVC", "BLAH", "BLAH"];
 
   return (
-    <section
-      id="about"
-      className="min-h-screen flex itens-center justify-center py-20"
-    >
+    <section id="about" className="section-container">
       <RevealOnScroll>
         <div className="max-w-3xl mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent ">
