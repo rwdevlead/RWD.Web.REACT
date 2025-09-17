@@ -12,9 +12,6 @@ export const Home = () => {
     (theme === "auto" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches);
 
-  console.log("Navbar theme:", theme); // Debugging
-  console.log("Navbar isDarkMode:", isDarkMode); // Debugging
-
   return (
     <section id="home" className="section-container">
       <RevealOnScroll>

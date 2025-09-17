@@ -1,14 +1,23 @@
 import { RevealOnScroll } from "../RevealOnScroll";
+import { useDarkMode } from "../../hooks/useDarkMode";
+
+import nugetLight from "../../assets/images/NuGet_Logo.svg";
+import nugetDark from "../../assets/images/NuGet_Logo.svg";
 
 export const Projects = () => {
+  const { theme } = useDarkMode(); // Get the theme from the hook
+
+  // Determine if dark mode is active
+  const isDarkMode =
+    theme === "dark" ||
+    (theme === "auto" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
+
   return (
     <section id="projects" className="section-container">
       <RevealOnScroll>
-        <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent ">
-            Featured Projects
-          </h2>
-          <h2>Featured Projects</h2>
+        <div className="max-w-3xl mx-auto px-4">
+          <h2 className="mt-8 mb-6">Featured Projects</h2>
 
           <div className="grid gird-cols-1 md:grid-cols-2 gap-6">
             <div
