@@ -79,7 +79,7 @@ body {
   }
 }
 
-/* Add this to your index.css */
+/* Global Section CSS */
 .section-container {
   @apply min-h-screen flex items-center justify-center relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
   @apply scroll-mt-20;

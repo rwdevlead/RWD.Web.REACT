@@ -1,146 +1,91 @@
 import { RevealOnScroll } from "../RevealOnScroll";
-import { useDarkMode } from "../../hooks/useDarkMode";
+// import { useDarkMode } from "../../hooks/useDarkMode";
 
-import nugetLight from "../../assets/images/NuGet_Logo.svg";
-import nugetDark from "../../assets/images/NuGet_Logo.svg";
+// import nugetLight from "../../assets/images/NuGet_Logo.svg";
+// import nugetDark from "../../assets/images/NuGet_Logo.svg";
 
 export const Projects = () => {
-  const { theme } = useDarkMode(); // Get the theme from the hook
+  // const { theme } = useDarkMode(); // Get the theme from the hook
 
-  // Determine if dark mode is active
-  const isDarkMode =
-    theme === "dark" ||
-    (theme === "auto" &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches);
+  // // Determine if dark mode is active
+  // const isDarkMode =
+  //   theme === "dark" ||
+  //   (theme === "auto" &&
+  //     window.matchMedia("(prefers-color-scheme: dark)").matches);
 
   return (
     <section id="projects" className="section-container">
       <RevealOnScroll>
         <div className="max-w-3xl mx-auto px-4">
-          <h2 className="mt-8 mb-6">Featured Projects</h2>
+          <h2 className="mt-4 mb-6">Featured Projects</h2>
 
           <div className="grid gird-cols-1 md:grid-cols-2 gap-6">
             <div
-              className="p-6 rounded-xl border border-white/10 hover:-translate-y-1 hover:border-blue-500/30
+              className="p-6 rounded-xl border border-white/20 hover:-translate-y-1 hover:border-blue-500/30
                          hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition "
             >
-              <h3 className="text-xl font-bold mb-2">Cloud Platform</h3>
-              <h3>Cloud Platform CSS</h3>
-              <p className="text-gray-400 mb-4">
-                Scalable cloud infrastructure management with real-time
-                monitoring and automated scaling.
-              </p>
+              <h3>RWDevs.com</h3>
+
               <div className="flex flex-wrap gap-2 mb-4">
-                {["REact", "AWS", "Docker"].map((tech, key) => {
-                  <span
-                    key={key}
-                    className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20
-                                   hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition 
-                                   "
-                  >
-                    {tech}
-                  </span>;
+                {["React", "Vite", "SPA", "PWA"].map((tech, key) => {
+                  return (
+                    <span
+                      key={key}
+                      className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm
+                 hover:bg-blue-500/20 hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition"
+                    >
+                      {tech}
+                    </span>
+                  );
                 })}
+              </div>
+              <p className="text-gray-400 mb-4">(this site)</p>
+
+              <div className="flex justify-between items-center">
+                <a
+                  href="https://github.com/rwdevlead/RWD.Web.REACT"
+                  className="text-blue-400 hover:text-teal-300 transition-colors my-4"
+                >
+                  View Project →
+                </a>
               </div>
               <div className="flex justify-between items-center">
                 <a
                   href="#"
                   className="text-blue-400 hover:text-teal-300 transition-colors my-4"
                 >
-                  View Project →
+                  Live →
                 </a>
               </div>
             </div>
 
             <div
-              className="p-6 rounded-xl border border-white/10 hover:-translate-y-1 hover:border-blue-500/30
+              className="p-6 rounded-xl border border-white/20 hover:-translate-y-1 hover:border-blue-500/30
                          hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition "
             >
-              <h3 className="text-xl font-bold mb-2">Cloud Platform</h3>
-              <h3>Cloud Platform CSS</h3>
-              <p className="text-gray-400 mb-4">
-                Scalable cloud infrastructure management with real-time
-                monitoring and automated scaling.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {["REact", "AWS", "Docker"].map((tech, key) => {
-                  <span
-                    key={key}
-                    className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20
-                                   hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition 
-                                   "
-                  >
-                    {tech}
-                  </span>;
-                })}
-              </div>
-              <div className="flex justify-between items-center">
-                <a
-                  href="#"
-                  className="text-blue-400 hover:text-teal-300 transition-colors my-4"
-                >
-                  View Project →
-                </a>
-              </div>
-            </div>
+              <h3>Home Lab</h3>
 
-            <div
-              className="p-6 rounded-xl border border-white/10 hover:-translate-y-1 hover:border-blue-500/30
-                         hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition "
-            >
-              <h3 className="text-xl font-bold mb-2">Cloud Platform</h3>
-              <h3>Cloud Platform CSS</h3>
-              <p className="text-gray-400 mb-4">
-                Scalable cloud infrastructure management with real-time
-                monitoring and automated scaling.
-              </p>
               <div className="flex flex-wrap gap-2 mb-4">
-                {["REact", "AWS", "Docker"].map((tech, key) => {
-                  <span
-                    key={key}
-                    className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20
-                                   hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition 
-                                   "
-                  >
-                    {tech}
-                  </span>;
+                {["Terraform", "Ansible", "Docker"].map((tech, key) => {
+                  return (
+                    <span
+                      key={key}
+                      className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm
+                 hover:bg-blue-500/20 hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition"
+                    >
+                      {tech}
+                    </span>
+                  );
                 })}
               </div>
-              <div className="flex justify-between items-center">
-                <a
-                  href="#"
-                  className="text-blue-400 hover:text-teal-300 transition-colors my-4"
-                >
-                  View Project →
-                </a>
-              </div>
-            </div>
+              <p className="text-gray-400 mb-4">
+                This is my collection of scripts and configurations for my
+                network I use to sandbox.
+              </p>
 
-            <div
-              className="p-6 rounded-xl border border-white/10 hover:-translate-y-1 hover:border-blue-500/30
-                         hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition "
-            >
-              <h3 className="text-xl font-bold mb-2">Cloud Platform</h3>
-              <h3>Cloud Platform CSS</h3>
-              <p className="text-gray-400 mb-4">
-                Scalable cloud infrastructure management with real-time
-                monitoring and automated scaling.
-              </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {["REact", "AWS", "Docker"].map((tech, key) => {
-                  <span
-                    key={key}
-                    className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20
-                                   hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition 
-                                   "
-                  >
-                    {tech}
-                  </span>;
-                })}
-              </div>
               <div className="flex justify-between items-center">
                 <a
-                  href="#"
+                  href="https://github.com/rwdevlead/Homelab"
                   className="text-blue-400 hover:text-teal-300 transition-colors my-4"
                 >
                   View Project →

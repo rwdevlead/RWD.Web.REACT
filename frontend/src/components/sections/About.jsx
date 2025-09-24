@@ -5,12 +5,6 @@ import nugetDark from "../../assets/images/NuGet_Logo.svg";
 import githubLight from "../../assets/images/GitHub_Light.svg";
 import githubDark from "../../assets/images/GitHub_Dark.svg";
 
-import gistLight from "../../assets/images/GitHub_Light.svg";
-import gistDark from "../../assets/images/GitHub_Dark.svg";
-
-import stackLight from "../../assets/images/Stack_Light.svg";
-import stackDark from "../../assets/images/Stack_Dark.svg";
-
 import linkedinLight from "../../assets/images/Linkedin_logo.svg";
 import linkedinDark from "../../assets/images/Linkedin_logo.svg";
 
@@ -31,7 +25,7 @@ export const About = () => {
         <div className="max-w-3xl mx-auto px-4">
           <h2>About Me</h2>
 
-          <div className="rounded-xl p-8 border-white/10 border ">
+          <div className="rounded-xl p-8 border-white/20 border ">
             <p className="mb-6">
               I’ve been doing what I love for many years—building software that
               solves real problems and makes life easier. Along the way, I’ve
@@ -134,67 +128,6 @@ export const About = () => {
                       className="w-full h-auto object-contain object-center"
                       src={isDarkMode ? githubDark : githubLight}
                       alt="GitHub Logo"
-                    />
-                  </a>
-                </div>
-              </div>
-
-              {/* Snippets */}
-              <div
-                className="rounded-2xl border border-gray-300 dark:border-gray-600
-                 bg-white dark:bg-gray-800 shadow-md dark:shadow-lg hover:-translate-y-1 transition-all overflow-hidden"
-              >
-                <div className="bg-gray-200 dark:bg-gray-700 px-4 py-3 border-b border-gray-300 dark:border-gray-600">
-                  <h3 className="text-lg font-bold text-gray-700 dark:text-gray-200">
-                    GitHub Gist
-                  </h3>
-                </div>
-                <div className="p-4">
-                  <h4 className="text-base font-semibold text-blue-600 dark:text-blue-400">
-                    Code Snippets
-                  </h4>
-                  <p className="text-sm mt-2 text-gray-600 dark:text-gray-300">
-                    I share small snippets of reusable code with others on
-                    GitHub Gist.
-                  </p>
-                  <a
-                    href="https://gist.github.com/RealWorldDevelopers"
-                    className="block w-full mt-8"
-                  >
-                    <img
-                      className="w-full h-auto object-contain object-center"
-                      src={isDarkMode ? gistDark : gistLight}
-                      alt="GitHub Gist Logo"
-                    />
-                  </a>
-                </div>
-              </div>
-
-              {/* Giving Back */}
-              <div
-                className="rounded-2xl border border-gray-300 dark:border-gray-600
-                 bg-white dark:bg-gray-800 shadow-md dark:shadow-lg hover:-translate-y-1 transition-all overflow-hidden"
-              >
-                <div className="bg-gray-200 dark:bg-gray-700 px-4 py-3 border-b border-gray-300 dark:border-gray-600">
-                  <h3 className="text-lg font-bold text-gray-700 dark:text-gray-200">
-                    Stack Overflow
-                  </h3>
-                </div>
-                <div className="p-4">
-                  <h4 className="text-base font-semibold text-blue-600 dark:text-blue-400">
-                    Contribution
-                  </h4>
-                  <p className="text-sm mt-2 text-gray-600 dark:text-gray-300">
-                    I give back to the developer community on Stack Overflow.
-                  </p>
-                  <a
-                    href="https://stackoverflow.com/users/4505594/jstevens"
-                    className="block w-full mt-8"
-                  >
-                    <img
-                      className="w-full h-auto object-contain object-center"
-                      src={isDarkMode ? stackDark : stackLight}
-                      alt="Stack Overflow Logo"
                     />
                   </a>
                 </div>
