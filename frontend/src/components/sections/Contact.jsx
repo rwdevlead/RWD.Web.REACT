@@ -74,84 +74,89 @@ export const Contact = () => {
 
   return (
     <section id="contact" className="section-container">
-      <RevealOnScroll>
+      <RevealOnScroll effect="scaleUp">
         <div className="max-w-3xl mx-auto px-4">
           <h2 className="mt-4 mb-6">Get in Touch</h2>
-
           <form onSubmit={handleSubmit} className="space-y-6">
             <input type="hidden" name="time" value={getDate()} />
 
-            <div className="rounded-xl p-8 border-white/20 border ">
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                maxLength={50}
-                pattern="^[a-zA-Z\s'-]+$"
-                className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white transition focus:outline-none focus:border-blue-500 focus:bg-blue-500/5"
-                placeholder="Your name ..."
-                onChange={handleChange}
-              />
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              maxLength={50}
+              pattern="^[a-zA-Z\s'-]+$"
+              placeholder="Your name ..."
+              onChange={handleChange}
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+            />
 
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                maxLength={250}
-                className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white transition focus:outline-none focus:border-blue-500 focus:bg-blue-500/5"
-                placeholder="Your email (example@gmail.com)"
-                onChange={handleChange}
-              />
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              maxLength={250}
+              placeholder="Your email (example@gmail.com)"
+              onChange={handleChange}
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+            />
 
-              <input
-                type="text"
-                id="title"
-                name="title"
-                required
-                maxLength={80}
-                pattern="^[\w\s.-]+$"
-                className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white transition focus:outline-none focus:border-blue-500 focus:bg-blue-500/5"
-                placeholder="Your subject ..."
-                onChange={handleChange}
-              />
+            <input
+              type="text"
+              id="title"
+              name="title"
+              required
+              maxLength={80}
+              pattern="^[\w\s.-]+$"
+              placeholder="Your subject ..."
+              onChange={handleChange}
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+            />
 
-              <textarea
-                id="message"
-                name="message"
-                required
-                rows={5}
-                maxLength={500}
-                pattern="^[\w\s.,!?'\-()]+$"
-                className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white transition focus:outline-none focus:border-blue-500 focus:bg-blue-500/5"
-                placeholder="Your message ..."
-                onChange={handleChange}
-              />
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows={5}
+              maxLength={500}
+              pattern="^[\w\s.,!?'\-()]+$"
+              placeholder="Your message ..."
+              onChange={handleChange}
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+            />
 
-              {siteKey ? (
-                <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
-              ) : (
-                <p>Loading CAPTCHA...</p>
-              )}
+            {siteKey ? (
+              <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
+            ) : (
+              <p>Loading CAPTCHA...</p>
+            )}
 
-              <button
-                type="submit"
-                disabled={formDisabled}
-                className={`w-full py-3 px-6 rounded font-medium transition relative overflow-hidden
+            <button
+              type="submit"
+              disabled={formDisabled}
+              className={`w-full py-3 px-6 rounded font-medium transition relative overflow-hidden
                 ${
                   formDisabled
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-blue-500 text-white hover:-translate-y-0.5 hover:shadow-[0_0_115px_rgba(59,130,246,0.4)] cursor-pointer"
                 }`}
-              >
-                {formDisabled ? "Message Sent" : "Send Message"}
-              </button>
+            >
+              {formDisabled ? "Message Sent" : "Send Message"}
+            </button>
 
-              {status.error && (
-                <p className="text-white mt-2 text-sm">{status.error}</p>
-              )}
-            </div>
+            {status.error && (
+              <p className="text-white mt-2 text-sm">{status.error}</p>
+            )}
           </form>
         </div>
       </RevealOnScroll>

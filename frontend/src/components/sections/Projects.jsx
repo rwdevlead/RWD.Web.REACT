@@ -15,7 +15,7 @@ export const Projects = () => {
 
   return (
     <section id="projects" className="section-container">
-      <RevealOnScroll>
+      <RevealOnScroll effect="scaleUp">
         <div className="max-w-3xl mx-auto px-4">
           <h2 className="mt-4 mb-6">Featured Projects</h2>
 

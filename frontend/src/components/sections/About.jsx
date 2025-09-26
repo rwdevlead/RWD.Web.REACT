@@ -21,7 +21,7 @@ export const About = () => {
 
   return (
     <section id="about" className="section-container">
-      <RevealOnScroll>
+      <RevealOnScroll effect="scaleUp">
         <div className="max-w-3xl mx-auto px-4">
           <h2>About Me</h2>
 

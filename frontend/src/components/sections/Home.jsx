@@ -14,7 +14,7 @@ export const Home = () => {
 
   return (
     <section id="home" className="section-container">
-      <RevealOnScroll>
+      <RevealOnScroll effect="scaleUp">
         <div>
           <div className="relative overflow-hidden">
             <img
