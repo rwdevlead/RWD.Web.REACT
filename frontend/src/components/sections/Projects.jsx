@@ -27,17 +27,19 @@ export const Projects = () => {
               <h3>RWDevs.com</h3>
 
               <div className="flex flex-wrap gap-2 mb-4">
-                {["React", "Vite", "SPA", "PWA"].map((tech, key) => {
-                  return (
-                    <span
-                      key={key}
-                      className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm
+                {["React", "Vite", "SPA", "PWA", "Tailwind CSS"].map(
+                  (tech, key) => {
+                    return (
+                      <span
+                        key={key}
+                        className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm
                  hover:bg-blue-500/20 hover:shadow-[0_2px_8px_rgba(59,130,246,0.1)] transition"
-                    >
-                      {tech}
-                    </span>
-                  );
-                })}
+                      >
+                        {tech}
+                      </span>
+                    );
+                  }
+                )}
               </div>
               <p className="text-gray-400 mb-4">(this site)</p>
 
@@ -79,8 +81,9 @@ export const Projects = () => {
                 })}
               </div>
               <p className="text-gray-400 mb-4">
-                This is my collection of scripts and configurations for my
-                network I use to sandbox.
+                An Infrastructure as Code (IaC) setup that automates a homelab,
+                handling VM creation, system setup, and app deployment with
+                Terraform, Ansible, and Docker Compose.
               </p>
 
               <div className="flex justify-between items-center">

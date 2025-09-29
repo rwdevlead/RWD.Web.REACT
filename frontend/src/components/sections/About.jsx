@@ -25,7 +25,7 @@ export const About = () => {
         <div className="max-w-3xl mx-auto px-4">
           <h2>About Me</h2>
 
-          <div className="rounded-xl p-8 border-white/20 border ">
+          <div className="rounded-xl p-8 border-white/20 border">
             <p className="mb-6">
               I’ve been doing what I love for many years—building software that
               solves real problems and makes life easier. Along the way, I’ve
