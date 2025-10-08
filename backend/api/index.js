@@ -1,4 +1,5 @@
 import express from "express";
+import helmet from "helmet";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -21,7 +22,24 @@ dotenv.config({ path: rootEnvPath });
 
 const app = express();
 
-app.use(cors());
+// Core security middleware
+app.use(
+  helmet({
+    contentSecurityPolicy: false, // Vercel handles CSP
+    crossOriginEmbedderPolicy: true,
+    crossOriginOpenerPolicy: { policy: "same-origin" },
+  })
+);
+
+// CORS only for your frontend
+app.use(
+  cors({
+    origin: ["https://your-frontend.vercel.app", "http://localhost:3000"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 app.use(express.json());
 
 app.get("/api", (req, res) => {
