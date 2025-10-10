@@ -25,7 +25,6 @@ const app = express();
 // Helmet security headers for Vercel preview & production
 app.use(
   helmet({
-    contentSecurityPolicy: false, // Vercel handles CSP
     crossOriginEmbedderPolicy: true,
     crossOriginOpenerPolicy: { policy: "same-origin" },
     strictTransportSecurity: {
