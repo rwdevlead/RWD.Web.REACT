@@ -25,45 +25,7 @@ const app = express();
 // Helmet security headers for Vercel preview & production
 app.use(
   helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: [
-          "'self'",
-          "https://www.google.com",
-          "https://www.gstatic.com",
-          "https://vercel.live", // needed for Vercel live reload scripts
-        ],
-        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-        imgSrc: ["'self'", "data:", "https:"],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        connectSrc: [
-          "'self'",
-          "https://www.google.com",
-          "https://www.gstatic.com",
-          "https://api.vercel.com",
-          "https://vercel.live",
-          "https://*.vercel.app",
-          "https://rwdevs.com",
-          "https://*.rwdevs.com",
-        ],
-        frameSrc: ["https://www.google.com"],
-        objectSrc: ["'none'"],
-        baseUri: ["'self'"],
-        frameAncestors: ["'none'"],
-        upgradeInsecureRequests: [],
-      },
-    },
-    xContentTypeOptions: true, // X-Content-Type-Options: nosniff
-    frameguard: { action: "deny" }, // X-Frame-Options: DENY
-    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
-    permissionsPolicy: {
-      features: {
-        camera: [],
-        microphone: [],
-        geolocation: [],
-      },
-    },
+    contentSecurityPolicy: false, // Vercel handles CSP
     crossOriginEmbedderPolicy: true,
     crossOriginOpenerPolicy: { policy: "same-origin" },
     strictTransportSecurity: {
