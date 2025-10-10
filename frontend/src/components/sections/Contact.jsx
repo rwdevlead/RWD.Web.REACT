@@ -73,73 +73,67 @@ export const Contact = () => {
   }
 
   return (
-    <section
-      id="contact"
-      className="min-h-screen flex flex-col items-center justify-center py-20"
-    >
-      <RevealOnScroll>
-        <div className="px-4 w-full max-w-2xl">
-          <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent ">
-            Get in Touch
-          </h2>
-
+    <section id="contact" className="section-container">
+      <RevealOnScroll effect="scaleUp">
+        <div className="max-w-3xl mx-auto px-4">
+          <h2 className="mt-4 mb-6">Get in Touch</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <input type="hidden" name="time" value={getDate()} />
 
-            <div className="relative">
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                maxLength={50}
-                pattern="^[a-zA-Z\s'-]+$"
-                className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white transition focus:outline-none focus:border-blue-500 focus:bg-blue-500/5"
-                placeholder="Your name ..."
-                onChange={handleChange}
-              />
-            </div>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              maxLength={50}
+              pattern="^[a-zA-Z\s'-]+$"
+              placeholder="Your name ..."
+              onChange={handleChange}
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+            />
 
-            <div className="relative">
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                maxLength={250}
-                className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white transition focus:outline-none focus:border-blue-500 focus:bg-blue-500/5"
-                placeholder="Your email (example@gmail.com)"
-                onChange={handleChange}
-              />
-            </div>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              maxLength={250}
+              placeholder="Your email (example@gmail.com)"
+              onChange={handleChange}
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+            />
 
-            <div className="relative">
-              <input
-                type="text"
-                id="title"
-                name="title"
-                required
-                maxLength={80}
-                pattern="^[\w\s.-]+$"
-                className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white transition focus:outline-none focus:border-blue-500 focus:bg-blue-500/5"
-                placeholder="Your subject ..."
-                onChange={handleChange}
-              />
-            </div>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              required
+              maxLength={80}
+              pattern="^[\w\s.-]+$"
+              placeholder="Your subject ..."
+              onChange={handleChange}
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+            />
 
-            <div className="relative">
-              <textarea
-                id="message"
-                name="message"
-                required
-                rows={5}
-                maxLength={500}
-                pattern="^[\w\s.,!?'\-()]+$"
-                className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-white transition focus:outline-none focus:border-blue-500 focus:bg-blue-500/5"
-                placeholder="Your message ..."
-                onChange={handleChange}
-              />
-            </div>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows={5}
+              maxLength={500}
+              pattern="^[\w\s.,!?'\-()]+$"
+              placeholder="Your message ..."
+              onChange={handleChange}
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+            />
 
             {siteKey ? (
               <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />

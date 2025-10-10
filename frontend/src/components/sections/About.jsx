@@ -1,81 +1,136 @@
 import { RevealOnScroll } from "../RevealOnScroll";
+import nugetLight from "../../assets/images/NuGet_Logo.svg";
+import nugetDark from "../../assets/images/NuGet_Logo.svg";
+
+import githubLight from "../../assets/images/GitHub_Light.svg";
+import githubDark from "../../assets/images/GitHub_Dark.svg";
+
+import linkedinLight from "../../assets/images/Linkedin_logo.svg";
+import linkedinDark from "../../assets/images/Linkedin_logo.svg";
+
+import { useDarkMode } from "../../hooks/useDarkMode";
 
 export const About = () => {
-  const frontendSkill = ["React", "SQL", "BLAH", "BLAH"];
-  const backendSkill = ["Azure", "MVC", "BLAH", "BLAH"];
+  const { theme } = useDarkMode(); // Get the theme from the hook
+
+  // Determine if dark mode is active
+  const isDarkMode =
+    theme === "dark" ||
+    (theme === "auto" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
 
   return (
-    <section
-      id="about"
-      className="min-h-screen flex itens-center justify-center py-20"
-    >
-      <RevealOnScroll>
+    <section id="about" className="section-container">
+      <RevealOnScroll effect="scaleUp">
         <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent ">
-            About Me
-          </h2>
+          <h2>About Me</h2>
 
-          <div className="rounded-xl p-8 border-white/10 border hover:-translate-y-1 transition-all">
-            <p className="text-gray-300 mb-6">
-              I a good developer <br />
-              Blah Blah Blah
+          <div className="rounded-xl p-8 border-white/20 border">
+            <p className="mb-6">
+              I’ve been doing what I love for many years—building software that
+              solves real problems and makes life easier. Along the way, I’ve
+              had the chance to work across industries like finance and
+              manufacturing, lead teams, and deliver solutions that really make
+              an impact. I enjoy creating software that’s secure, scalable, and
+              easy to maintain, and I get a lot of energy from helping teams
+              grow and succeed together.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="rounded-xl p-6 hover:-translate-y-1 transition-all">
-                <h3 className="text-xl font-bold mb-4">Frontend</h3>
-                <div className="flex flex-wrap gap-2">
-                  {frontendSkill.map((tech, key) => (
-                    <span
-                      key={key}
-                      className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20
-                                   hover:shadow-[0_2px_8px_rgba(59,130,2246,0.2)] transition 
-                                   "
-                    >
-                      {tech}
-                    </span>
-                  ))}
+            {/* Cards Grid */}
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 ">
+              {/* LinkedIn */}
+              <div
+                className="rounded-2xl border border-gray-300 dark:border-gray-600
+                 bg-white dark:bg-gray-800 shadow-md dark:shadow-lg hover:-translate-y-1 transition-all overflow-hidden"
+              >
+                <div className="bg-gray-200 dark:bg-gray-700 px-4 py-3 border-b border-gray-300 dark:border-gray-600">
+                  <h3 className="text-lg font-bold text-gray-700 dark:text-gray-200">
+                    LinkedIn
+                  </h3>
                 </div>
-              </div>
-              <div className="rounded-xl p-6 hover:-translate-y-1 transition-all">
-                <h3 className="text-xl font-bold mb-4">Backend</h3>
-                <div className="flex flex-wrap gap-2">
-                  {backendSkill.map((tech, key) => (
-                    <span
-                      key={key}
-                      className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20
-                                   hover:shadow-[0_2px_8px_rgba(59,130,2246,0.2)] transition 
-                                   "
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+                <div className="p-4">
+                  <h4 className="text-base font-semibold text-blue-600 dark:text-blue-400">
+                    Professional Profile
+                  </h4>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-            <div className="p-6 rounded-xl border-white/10 border hover:-translate-1 transition-all">
-              <h3 className="text-xl fount-bold mb-4">Education</h3>
-              <ul className="list-disc list-inside text-gray-300 space-y-2">
-                <li>
-                  <strong>BS in Crap</strong> - xyz school 2016-2020
-                </li>
-                <li>something else</li>
-              </ul>
-            </div>
-            <div className="p-6 rounded-xl border-white/10 border hover:-translate-1 transition-all">
-              <h3 className="text-xl fount-bold mb-4">Work Experience</h3>
-              <div className="space-y-4 text-gray-300">
-                <h4 className="font-semibold">
-                  Software Engineer at ABC Corp (2015-2020)
-                </h4>
-                <p>Developed some crap for someone to use</p>
+                  <p className="text-sm mt-2 text-gray-600 dark:text-gray-300">
+                    I connect with other professionals and share my work on
+                    LinkedIn.
+                  </p>
+                  <a
+                    href="https://stackoverflow.com/users/4505594/jstevens"
+                    className="block w-full mt-10"
+                  >
+                    <img
+                      className="w-full h-auto object-contain object-center"
+                      src={isDarkMode ? linkedinDark : linkedinLight}
+                      alt="LinkedIn Logo"
+                    />
+                  </a>
+                </div>
               </div>
-              <div className="space-y-4 text-gray-300">
-                <h4>Software Engineer at xyz Corp (2015-2020)</h4>
-                <p>Developed some crap for someone to use</p>
+
+              {/* NuGet Packages */}
+              <div
+                className="rounded-2xl border border-gray-300 dark:border-gray-600
+                 bg-white dark:bg-gray-800 shadow-md dark:shadow-lg hover:-translate-y-1 transition-all overflow-hidden"
+              >
+                <div className="bg-gray-200 dark:bg-gray-700 px-4 py-3 border-b border-gray-300 dark:border-gray-600">
+                  <h3 className="text-lg font-bold text-gray-700 dark:text-gray-200">
+                    NuGet Packages
+                  </h3>
+                </div>
+                <div className="p-4">
+                  <h4 className="text-base font-semibold text-blue-600 dark:text-blue-400">
+                    Shared Libraries
+                  </h4>
+
+                  <p className="text-sm mt-2 text-gray-600 dark:text-gray-300">
+                    I share some of my common code with others through NuGet
+                    packages.
+                  </p>
+                  <a
+                    href="https://www.nuget.org/profiles/RealWorldDevelopers"
+                    className="block w-full mt-4"
+                  >
+                    <img
+                      className="w-full h-auto object-contain"
+                      src={isDarkMode ? nugetDark : nugetLight}
+                      alt="NuGet Logo"
+                    />
+                  </a>
+                </div>
+              </div>
+
+              {/* Source Code */}
+              <div
+                className="rounded-2xl border border-gray-300 dark:border-gray-600
+                 bg-white dark:bg-gray-800 shadow-md dark:shadow-lg hover:-translate-y-1 transition-all overflow-hidden"
+              >
+                <div className="bg-gray-200 dark:bg-gray-700 px-4 py-3 border-b border-gray-300 dark:border-gray-600">
+                  <h3 className="text-lg font-bold text-gray-700 dark:text-gray-200">
+                    GitHub Repositories
+                  </h3>
+                </div>
+                <div className="p-4">
+                  <h4 className="text-base font-semibold text-blue-600 dark:text-blue-400">
+                    Open Source Projects
+                  </h4>
+                  <p className="text-sm mt-2 text-gray-600 dark:text-gray-300">
+                    I share many of my application projects with others on
+                    GitHub.
+                  </p>
+                  <a
+                    href="https://github.com/RealWorldDevelopers"
+                    className="block w-full mt-10"
+                  >
+                    <img
+                      className="w-full h-auto object-contain object-center"
+                      src={isDarkMode ? githubDark : githubLight}
+                      alt="GitHub Logo"
+                    />
+                  </a>
+                </div>
               </div>
             </div>
           </div>

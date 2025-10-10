@@ -1,4 +1,5 @@
 import express from "express";
+import helmet from "helmet";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -21,7 +22,28 @@ dotenv.config({ path: rootEnvPath });
 
 const app = express();
 
-app.use(cors());
+// Helmet security headers for Vercel preview & production
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: true,
+    crossOriginOpenerPolicy: { policy: "same-origin" },
+    strictTransportSecurity: {
+      maxAge: 63072000,
+      includeSubDomains: true,
+      preload: true,
+    },
+  })
+);
+
+// CORS only for your frontend
+app.use(
+  cors({
+    origin: ["https://your-frontend.vercel.app", "http://localhost:3000"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 app.use(express.json());
 
 app.get("/api", (req, res) => {
