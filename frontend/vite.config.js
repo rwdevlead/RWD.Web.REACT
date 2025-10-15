@@ -22,6 +22,43 @@ export default defineConfig({
         scope: "/",
         start_url: "/",
         orientation: "portrait",
+        screenshots: [
+          {
+            src: "/screenshots/desktop-1.png",
+            sizes: "1920x1080",
+            type: "image/png",
+            form_factor: "wide",
+            label: "Desktop view",
+          },
+          {
+            src: "/screenshots/desktop-2.png",
+            sizes: "1920x1080",
+            type: "image/png",
+            form_factor: "wide",
+            label: "Desktop view",
+          },
+          {
+            src: "/screenshots/desktop-3.png",
+            sizes: "1920x1080",
+            type: "image/png",
+            form_factor: "wide",
+            label: "Desktop view",
+          },
+          {
+            src: "/screenshots/mobile-1.png",
+            sizes: "720x1280",
+            type: "image/png",
+            form_factor: "narrow",
+            label: "Mobile view",
+          },
+          {
+            src: "/screenshots/mobile-2.png",
+            sizes: "720x1280",
+            type: "image/png",
+            form_factor: "narrow",
+            label: "Mobile view",
+          },
+        ],
         icons: [
           {
             src: "windows11/SmallTile.scale-100.png",
