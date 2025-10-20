@@ -16,6 +16,9 @@
     "dev:frontend": "npm run dev --workspace frontend",
     "dev:backend": "npm run dev --workspace backend",
     "dev": "concurrently -k \"npm run dev:watch --workspace backend\" \"npm run dev --workspace frontend\"",
+    "build": "npm run build --workspace frontend",
+    "preview": "npm run preview --workspace frontend",
+    "build:preview": "npm run build && npm run preview",
     "test": "vitest"
   },
   "repository": {
@@ -31,6 +34,7 @@
   },
   "homepage": "https://github.com/rwdevlead/RWD.Web.REACT#readme",
   "dependencies": {
+    "@fontsource/space-grotesk": "^5.2.10",
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.12.0",
     "cors": "^2.8.5",
@@ -44,6 +48,7 @@
     "react-dom": "^19.1.1",
     "react-google-recaptcha": "^3.1.0",
     "tailwindcss": "^4.1.11",
+    "vite-plugin-compression": "^0.5.1",
     "zod": "^4.0.14"
   },
   "devDependencies": {

@@ -28,7 +28,7 @@ export const Navbar = ({ menuOpen, setMenuOpen }) => {
             <div className="h-10 w-10">
               <img
                 src={isDarkMode ? logoDark : logoLight}
-                alt="Logo"
+                alt="RWDevs.com Logo"
                 className="h-full w-full object-contain"
               />
             </div>

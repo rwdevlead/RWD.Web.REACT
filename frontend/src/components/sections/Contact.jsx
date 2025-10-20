@@ -4,7 +4,7 @@ import debounce from "lodash.debounce";
 import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 
-export const Contact = () => {
+function Contact() {
   const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
   const [form, setForm] = useState({
     name: "",
@@ -75,11 +75,15 @@ export const Contact = () => {
   return (
     <section id="contact" className="section-container">
       <RevealOnScroll effect="scaleUp">
-        <div className="max-w-3xl mx-auto px-4">
+        <div className="max-w-3xl mx-auto px-4 border border-black">
           <h2 className="mt-4 mb-6">Get in Touch</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <input type="hidden" name="time" value={getDate()} />
 
+            {/* <div> */}
+            <label htmlFor="name" className="sr-only">
+              Name
+            </label>
             <input
               type="text"
               id="name"
@@ -89,11 +93,18 @@ export const Contact = () => {
               pattern="^[a-zA-Z\s'-]+$"
               placeholder="Your name ..."
               onChange={handleChange}
+              value={form.name}
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 
-                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
-                dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                  dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+              aria-required="true"
             />
+            {/* </div>
 
+            <div> */}
+            <label htmlFor="email" className="sr-only">
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -102,11 +113,18 @@ export const Contact = () => {
               maxLength={250}
               placeholder="Your email (example@gmail.com)"
               onChange={handleChange}
+              value={form.email}
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 
                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
                 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+              aria-required="true"
             />
+            {/* </div>
 
+            <div> */}
+            <label htmlFor="title" className="sr-only">
+              Subject
+            </label>
             <input
               type="text"
               id="title"
@@ -116,11 +134,18 @@ export const Contact = () => {
               pattern="^[\w\s.-]+$"
               placeholder="Your subject ..."
               onChange={handleChange}
+              value={form.title}
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 
-                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
-                dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                  dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+              aria-required="true"
             />
+            {/* </div>
 
+            <div> */}
+            <label htmlFor="message" className="sr-only">
+              Message
+            </label>
             <textarea
               id="message"
               name="message"
@@ -130,15 +155,18 @@ export const Contact = () => {
               pattern="^[\w\s.,!?'\-()]+$"
               placeholder="Your message ..."
               onChange={handleChange}
+              value={form.message}
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 
-                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
-                dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+                  dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
+              aria-required="true"
             />
+            {/* </div> */}
 
             {siteKey ? (
               <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
             ) : (
-              <p>Loading CAPTCHA...</p>
+              <span>Loading CAPTCHA...</span>
             )}
 
             <button
@@ -162,4 +190,6 @@ export const Contact = () => {
       </RevealOnScroll>
     </section>
   );
-};
+}
+
+export default Contact;
