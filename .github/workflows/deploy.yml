@@ -65,8 +65,8 @@ jobs:
             vercel env rm EMAILJS_SERVICE_ID production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
             echo ${{ secrets.EMAILJS_SERVICE_ID }} | vercel env add EMAILJS_SERVICE_ID production --token=${{ secrets.VERCEL_TOKEN }}
 
-            vercel env rm EMAILJS_TEMPLATE_ID production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
-            echo ${{ secrets.EMAILJS_TEMPLATE_ID }} | vercel env add EMAILJS_TEMPLATE_ID production --token=${{ secrets.VERCEL_TOKEN }}
+            vercel env rm EMAILJS_CU_TEMPLATE_ID production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ secrets.EMAILJS_CU_TEMPLATE_ID }} | vercel env add EMAILJS_CU_TEMPLATE_ID production --token=${{ secrets.VERCEL_TOKEN }}
 
             vercel env rm EMAILJS_URL production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
             echo ${{ vars.EMAILJS_URL }} | vercel env add EMAILJS_URL production --token=${{ secrets.VERCEL_TOKEN }}
@@ -84,8 +84,8 @@ jobs:
             vercel env rm EMAILJS_SERVICE_ID preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
             echo ${{ secrets.EMAILJS_SERVICE_ID }} | vercel env add EMAILJS_SERVICE_ID preview --token=${{ secrets.VERCEL_TOKEN }}
 
-            vercel env rm EMAILJS_TEMPLATE_ID preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
-            echo ${{ secrets.EMAILJS_TEMPLATE_ID }} | vercel env add EMAILJS_TEMPLATE_ID preview --token=${{ secrets.VERCEL_TOKEN }}
+            vercel env rm EMAILJS_CU_TEMPLATE_ID preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+            echo ${{ secrets.EMAILJS_CU_TEMPLATE_ID }} | vercel env add EMAILJS_CU_TEMPLATE_ID preview --token=${{ secrets.VERCEL_TOKEN }}
 
             vercel env rm EMAILJS_URL preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
             echo ${{ vars.EMAILJS_URL }} | vercel env add EMAILJS_URL preview --token=${{ secrets.VERCEL_TOKEN }}
@@ -111,3 +111,35 @@ jobs:
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  notify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Send notification via EmailJS
+        run: |
+          STATUS="${{ needs.deploy.result }}"
+          MESSAGE=$(cat <<EOF
+          GitHub Action: ${{ github.workflow }}
+          Repository: ${{ github.repository }}
+          Branch: ${{ github.ref_name }}
+          Status: $STATUS
+
+          View details:
+          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          EOF
+          )
+
+          curl -X POST ${{ vars.EMAILJS_URL }} \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"service_id\": \"${{ secrets.EMAILJS_SERVICE_ID }}\",
+              \"template_id\": \"${{ secrets.EMAILJS_AR_TEMPLATE_ID }}\",
+              \"user_id\": \"${{ secrets.EMAILJS_PUBLICKEY }}\",
+              \"accessToken\": \"${{ secrets.EMAILJS_ACCESSTOKEN }}\",
+              \"template_params\": {
+                \"to_email\": \"${{ secrets.RWD_EMAIL_TO }}\",
+                \"subject\": \"Vercel Deploy $STATUS\",
+                \"message\": \"$MESSAGE\"
+              }
+            }"

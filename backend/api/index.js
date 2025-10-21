@@ -17,7 +17,7 @@ dotenv.config({ path: rootEnvPath });
 
 // console.log("Loaded env:", {
 //   EMAILJS_SERVICE_ID: process.env.EMAILJS_SERVICE_ID,
-//   EMAILJS_TEMPLATE_ID: process.env.EMAILJS_TEMPLATE_ID,
+//   EMAILJS_CU_TEMPLATE_ID: process.env.EMAILJS_CU_TEMPLATE_ID,
 // });
 
 const app = express();
@@ -75,7 +75,7 @@ app.post("/api/email", validate(emailSchema), async (req, res) => {
 
   const data = {
     service_id: process.env.EMAILJS_SERVICE_ID,
-    template_id: process.env.EMAILJS_TEMPLATE_ID,
+    template_id: process.env.EMAILJS_CU_TEMPLATE_ID,
     user_id: process.env.EMAILJS_PUBLICKEY,
     accessToken: process.env.EMAILJS_ACCESSTOKEN,
     template_params: {
