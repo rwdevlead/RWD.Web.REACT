@@ -125,11 +125,11 @@ jobs:
             -H 'Content-Type: application/json' \
             -d "{
               \"service_id\": \"${{ secrets.EMAILJS_SERVICE_ID }}\",
-              \"template_id\": \"${{ secrets.EMAILJS_TEMPLATE_ID }}\",
-              \"user_id\": \"${{ secrets.EMAILJS_PUBLIC_KEY }}\",
-              \"accessToken\": \"${{ secrets.EMAILJS_PRIVATE_KEY }}\",
+              \"template_id\": \"${{ secrets.EMAILJS_AR_TEMPLATE_ID }}\",
+              \"user_id\": \"${{ secrets.EMAILJS_PUBLICKEY }}\",
+              \"accessToken\": \"${{ secrets.EMAILJS_ACCESSTOKEN }}\",
               \"template_params\": {
-                \"to_email\": \"${{ secrets.EMAIL_TO }}\",
+                \"to_email\": \"${{ secrets.RWD_EMAIL_TO }}\",
                 \"subject\": \"🚀 Vercel Deploy $STATUS\",
                 \"message\": \"$MESSAGE\"
               }
