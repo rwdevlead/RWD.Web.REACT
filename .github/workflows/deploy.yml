@@ -111,35 +111,27 @@ jobs:
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  notify:
-    needs: vercel_deploy
+    notify:
+    needs: deploy
     runs-on: ubuntu-latest
     if: always()
     steps:
       - name: Send notification via EmailJS
         run: |
           STATUS="${{ needs.deploy.result }}"
-          MESSAGE=$(cat <<EOF
-          GitHub Action: ${{ github.workflow }}
-          Repository: ${{ github.repository }}
-          Branch: ${{ github.ref_name }}
-          Status: $STATUS
-
-          View details:
-          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          EOF
-          )
-
-          curl -X POST ${{ vars.EMAILJS_URL }} \
+          MESSAGE="GitHub Action: ${{ github.workflow }}<br>Repository: ${{ github.repository }}<br>Branch: ${{ github.ref_name }}<br>Status: $STATUS<br><br><a href='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'>View Details</a>"
+          
+          curl -X POST https://api.emailjs.com/api/v1.0/email/send \
             -H 'Content-Type: application/json' \
             -d "{
               \"service_id\": \"${{ secrets.EMAILJS_SERVICE_ID }}\",
-              \"template_id\": \"${{ secrets.EMAILJS_AR_TEMPLATE_ID }}\",
-              \"user_id\": \"${{ secrets.EMAILJS_PUBLICKEY }}\",
-              \"accessToken\": \"${{ secrets.EMAILJS_ACCESSTOKEN }}\",
+              \"template_id\": \"${{ secrets.EMAILJS_TEMPLATE_ID }}\",
+              \"user_id\": \"${{ secrets.EMAILJS_PUBLIC_KEY }}\",
+              \"accessToken\": \"${{ secrets.EMAILJS_PRIVATE_KEY }}\",
               \"template_params\": {
-                \"to_email\": \"${{ secrets.RWD_EMAIL_TO }}\",
-                \"subject\": \"Vercel Deploy $STATUS\",
+                \"to_email\": \"${{ secrets.EMAIL_TO }}\",
+                \"subject\": \"🚀 Vercel Deploy $STATUS\",
                 \"message\": \"$MESSAGE\"
               }
             }"
+
