@@ -73,9 +73,10 @@ function Contact() {
   }
 
   return (
-    <section id="contact" className="section-container">
+    <section id="contact" className="section-container" data-nosnippet>
+      <meta name="robots" content="noindex, nofollow" />
       <RevealOnScroll effect="scaleUp">
-        <div className="max-w-3xl mx-auto px-4 border border-black">
+        <div className="max-w-3xl mx-auto px-4">
           <h2 className="mt-4 mb-6">Get in Touch</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <input type="hidden" name="time" value={getDate()} />

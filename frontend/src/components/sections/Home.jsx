@@ -17,7 +17,7 @@ export const Home = () => {
       <RevealOnScroll effect="scaleUp">
         <div className="container mx-auto px-4">
           <div className="relative w-full max-w-screen-lg mx-auto">
-            <h1 class="sr-only">RWD Web Devs</h1>
+            <h1 className="sr-only">RWD Web Devs</h1>
             <img
               className="w-full"
               src={isDarkMode ? headerDark : headerLight}
