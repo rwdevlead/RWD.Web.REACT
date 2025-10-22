@@ -118,7 +118,7 @@ jobs:
           echo "$DEPLOY_OUTPUT"
 
           # Extract deploy URL from Vercel output (last HTTP(s) link)
-          DEPLOY_URL=$(echo "$DEPLOY_OUTPUT" | grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' | tail -1 || true)
+          DEPLOY_URL=$(echo "$DEPLOY_OUTPUT" | grep 'https://' | tail -1 | awk '{print $1}' || true)
 
           # Set outputs for GitHub Actions
           echo "deploy_url=$DEPLOY_URL" >> $GITHUB_OUTPUT
@@ -147,12 +147,14 @@ jobs:
 
           # Compose link message
           if [ -n "$DEPLOY_URL" ]; then
-            LINK_MSG="<br><a href='$DEPLOY_URL'>View Deployment</a>"
+            LINK_MSG="<br>🌐 <a href='$DEPLOY_URL'>View Deployment</a>"
           else
             LINK_MSG=""
           fi
 
-          MESSAGE="GitHub Action: ${{ github.workflow }}<br>Repository: ${{ github.repository }}<br>Branch: ${{ github.ref_name }}<br>GitHub Job: <b>$GH_STATUS</b><br>Vercel Deploy: <b>$DEPLOY_STATUS</b>$LINK_MSG<br><br><a href='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'>View Workflow Details</a>"
+          GH_LINK_MSG="🐙 <a href='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'>View GitHub Workflow</a>"
+
+          MESSAGE="GitHub Action: ${{ github.workflow }}<br>Repository: ${{ github.repository }}<br>Branch: ${{ github.ref_name }}<br>GitHub Job: <b>$GH_STATUS</b> $GH_LINK_MSG<br>Vercel Deploy: <b>$DEPLOY_STATUS</b>$LINK_MSG"
 
           curl -X POST https://api.emailjs.com/api/v1.0/email/send \
             -H 'Content-Type: application/json' \
