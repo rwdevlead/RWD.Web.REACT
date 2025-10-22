@@ -100,6 +100,9 @@ jobs:
         run: |
           set -e
 
+          DEPLOY_EXIT=0
+          DEPLOY_URL=""
+
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "Deploying to Production..."
             vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
@@ -114,12 +117,12 @@ jobs:
 
           echo "$DEPLOY_OUTPUT"
 
-          # Extract deploy URL if found in output
-          DEPLOY_URL=$(grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' <<< "$DEPLOY_OUTPUT" | head -1 || true)
-          echo "deploy_url=$DEPLOY_URL" >> $GITHUB_OUTPUT
+          # Extract deploy URL from Vercel output (last HTTP(s) link)
+          DEPLOY_URL=$(echo "$DEPLOY_OUTPUT" | grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' | tail -1 || true)
 
-          # Determine deployment status
-          if [[ "${DEPLOY_EXIT:-0}" -eq 0 && -n "$DEPLOY_URL" ]]; then
+          # Set outputs for GitHub Actions
+          echo "deploy_url=$DEPLOY_URL" >> $GITHUB_OUTPUT
+          if [[ $DEPLOY_EXIT -eq 0 && -n "$DEPLOY_URL" ]]; then
             echo "deploy_status=success" >> $GITHUB_OUTPUT
           else
             echo "deploy_status=failure" >> $GITHUB_OUTPUT
