@@ -99,7 +99,6 @@ jobs:
         id: vercel_deploy
         run: |
           set -e
-
           DEPLOY_EXIT=0
           DEPLOY_URL=""
 
@@ -118,7 +117,8 @@ jobs:
           echo "$DEPLOY_OUTPUT"
 
           # Extract deploy URL from Vercel output (last HTTP(s) link)
-          DEPLOY_URL=$(echo "$DEPLOY_OUTPUT" | grep 'https://' | tail -1 | awk '{print $1}' || true)
+          # Grab the Inspect URL from Vercel CLI output
+          DEPLOY_URL=$(echo "$DEPLOY_OUTPUT" | grep '^Inspect:' | awk '{print $2}' || true)
 
           # Set outputs for GitHub Actions
           echo "deploy_url=$DEPLOY_URL" >> $GITHUB_OUTPUT
