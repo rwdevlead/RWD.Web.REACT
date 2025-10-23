@@ -3,12 +3,19 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import mkcert from "vite-plugin-mkcert";
 import { VitePWA } from "vite-plugin-pwa";
+import viteCompression from "vite-plugin-compression";
 
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
     mkcert(),
+    viteCompression({
+      algorithm: "gzip",
+      threshold: 10240, // Only compress files larger than 10kb
+      deleteOriginFile: false,
+      filter: /\.(js|mjs|json|css|html|svg)$/i,
+    }),
     VitePWA({
       registerType: "prompt",
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
@@ -546,6 +553,10 @@ export default defineConfig({
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg,json}"],
         navigateFallback: "index.html",
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true,
+        navigateFallbackDenylist: [/^\/[^/]+\.[^/]+$/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/localhost\/api\/.*/i,
@@ -569,8 +580,6 @@ export default defineConfig({
             },
           },
         ],
-        skipWaiting: true,
-        clientsClaim: true,
       },
       devOptions: {
         enabled: true,
@@ -579,6 +588,32 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    minify: "terser", // Use terser for best compression
+    sourcemap: false, // Disable in prod
+    target: "es2017", // Modern JS output
+    chunkSizeWarningLimit: 800, // Adjust warnings
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console.*
+        drop_debugger: true,
+        pure_funcs: ["console.info", "console.debug"],
+      },
+      format: {
+        comments: false,
+      },
+    },
+    rollupOptions: {
+      output: {
+        // Split vendor code to separate cacheable chunks
+        manualChunks: {
+          react: ["react", "react-dom"],
+          motion: ["framer-motion"],
+          vendor: ["axios", "lodash", "lucide-react"],
+        },
+      },
+    },
+  },
   server: {
     https: true,
     proxy: {

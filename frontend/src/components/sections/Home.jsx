@@ -15,18 +15,24 @@ export const Home = () => {
   return (
     <section id="home" className="section-container">
       <RevealOnScroll effect="scaleUp">
-        <div>
-          <div className="relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="relative w-full max-w-screen-lg mx-auto">
+            <h1 className="sr-only">RWD Web Devs</h1>
             <img
-              className="w-full h-auto object-cover object-center"
+              className="w-full"
               src={isDarkMode ? headerDark : headerLight}
               alt="Header"
+              style={{
+                maxWidth: "100%",
+                width: "1152px",
+                height: "auto",
+              }}
             />
           </div>
           <div className="flex justify-center space-x-4">
-            <p className="text-gray-400 text-lg mb-8 max-w-lg mx-auto">
+            <span className="text-gray-400 text-lg mb-8 max-w-lg mx-auto">
               A sample of my code projects.
-            </p>
+            </span>
           </div>
           <div className="flex justify-center space-x-4">
             <a

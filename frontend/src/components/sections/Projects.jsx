@@ -41,7 +41,7 @@ export const Projects = () => {
                   }
                 )}
               </div>
-              <p className="text-gray-400 mb-4">(this site)</p>
+              <span className="text-gray-400 mb-4">(this site)</span>
 
               <div className="flex justify-between items-center">
                 <a

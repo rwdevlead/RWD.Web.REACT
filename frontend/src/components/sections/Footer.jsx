@@ -13,9 +13,9 @@ export const Footer = () => {
           <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
             {/* Branding */}
             <div className="text-center md:text-left">
-              <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                 Real World Developers
-              </h4>
+              </h3>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 © {new Date().getFullYear()} All rights reserved.
               </p>
