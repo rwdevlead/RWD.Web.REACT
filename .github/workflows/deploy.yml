@@ -12,6 +12,9 @@ jobs:
     permissions:
       security-events: write
     runs-on: ubuntu-latest
+    outputs:
+      deploy_url: ${{ steps.vercel_deploy.outputs.deploy_url }}
+      deploy_status: ${{ steps.vercel_deploy.outputs.deploy_status }}
     steps:
       # 1️⃣ Checkout code
       - name: Checkout repository
