@@ -159,7 +159,18 @@ jobs:
 
           GH_LINK_MSG="<br>🐙 <a href='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'>View GitHub Workflow</a>"
 
-          MESSAGE="GitHub Action: ${{ github.workflow }}<br>Repository: ${{ github.repository }}<br>Branch: ${{ github.ref_name }}<br>GitHub Job: <b>$GH_STATUS</b> $GH_LINK_MSG<br>Vercel Deploy: <b>$DEPLOY_STATUS</b>$LINK_MSG"
+          # Choose the right emoji for each status
+          GH_EMOJI=$( [[ "$GH_STATUS" == "success" ]] && echo "✅" || echo "❌" )
+          DEPLOY_EMOJI=$( [[ "$DEPLOY_STATUS" == "success" ]] && echo "✅" || echo "❌" )
+
+          # Build the HTML message
+          MESSAGE="<b>GitHub Action:</b> ${{ github.workflow }}<br>\
+          <b>Repository:</b> ${{ github.repository }}<br>\
+          <b>Branch:</b> ${{ github.ref_name }}<br><br>\
+          <b>GitHub Job:</b> $GH_EMOJI <b>$GH_STATUS</b> $GH_LINK_MSG<br>\
+          <b>Vercel Deploy:</b> $DEPLOY_EMOJI <b>$DEPLOY_STATUS</b> $LINK_MSG"
+
+          echo "MESSAGE: $MESSAGE"
 
           curl -X POST https://api.emailjs.com/api/v1.0/email/send \
             -H 'Content-Type: application/json' \
