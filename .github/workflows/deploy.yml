@@ -152,12 +152,12 @@ jobs:
 
           # Compose link message
           if [ -n "$DEPLOY_URL" ]; then
-            LINK_MSG="<br>🌐 <a href='$DEPLOY_URL'>View Deployment</a>"
+            LINK_MSG="<br>🌐 <a href='$DEPLOY_URL'>View Vercel Deployment</a>"
           else
             LINK_MSG=""
           fi
 
-          GH_LINK_MSG="🐙 <a href='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'>View GitHub Workflow</a>"
+          GH_LINK_MSG="<br>🐙 <a href='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'>View GitHub Workflow</a>"
 
           MESSAGE="GitHub Action: ${{ github.workflow }}<br>Repository: ${{ github.repository }}<br>Branch: ${{ github.ref_name }}<br>GitHub Job: <b>$GH_STATUS</b> $GH_LINK_MSG<br>Vercel Deploy: <b>$DEPLOY_STATUS</b>$LINK_MSG"
 
