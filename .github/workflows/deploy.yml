@@ -138,6 +138,8 @@ jobs:
     steps:
       - name: Send notification via EmailJS
         run: |
+          echo "Vercel deploy_url from vercel_deploy job: '${{ needs.vercel_deploy.outputs.deploy_url }}'"
+
           # GitHub job result
           GH_STATUS="${{ needs.vercel_deploy.result }}"
 
