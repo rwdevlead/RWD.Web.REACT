@@ -8,17 +8,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  load_env:
-    uses: ./.github/workflows/env.yml
-
   test_scan:
-    needs: load_env
     uses: ./.github/workflows/common-test-scan.yml
     permissions:
       security-events: write
 
   deploy:
-    needs: [load_env, test_scan]
+    needs: [test_scan]
     runs-on: ubuntu-latest
     permissions:
       contents: write # to be able to publish a GitHub release
@@ -98,7 +94,7 @@ jobs:
   # 📬 Always notify, even if deploy or test_scan fails
   notify:
     if: always() # ✅ ensures this runs regardless of failure
-    needs: [load_env, test_scan, deploy]
+    needs: [test_scan, deploy]
     uses: ./.github/workflows/common-notify.yml
     with:
       gh_status: ${{ needs.deploy.result }}
