@@ -8,8 +8,14 @@ on:
   workflow_dispatch:
 
 jobs:
+  load_env:
+    uses: ./.github/workflows/env.yml
+
   test_scan:
+    needs: load_env
     uses: ./.github/workflows/common-test-scan.yml
+    permissions:
+      security-events: write
 
   deploy:
     needs: test_scan
