@@ -64,11 +64,8 @@ jobs:
           vercel env rm EMAILJS_URL preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
           echo ${{ vars.EMAILJS_URL }} | vercel env add EMAILJS_URL preview --token=${{ secrets.VERCEL_TOKEN }}
         env:
-          NODE_VERSION: ${{ needs.load_env.outputs.NODE_VERSION }}
-          VERCEL_ORG_ID: ${{ needs.load_env.outputs.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ needs.load_env.outputs.VERCEL_PROJECT_ID }}
-          VERCEL_TOKEN: ${{ needs.load_env.outputs.VERCEL_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ needs.load_env.outputs.SLACK_WEBHOOK_URL }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       # 🚀 Step 4 — Build Release just prior to deploy.
       # ⛔ If Release Process fails → there will be no deploy.
@@ -94,11 +91,9 @@ jobs:
             echo "deploy_status=failure" >> $GITHUB_OUTPUT
           fi
         env:
-          NODE_VERSION: ${{ needs.load_env.outputs.NODE_VERSION }}
-          VERCEL_ORG_ID: ${{ needs.load_env.outputs.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ needs.load_env.outputs.VERCEL_PROJECT_ID }}
-          VERCEL_TOKEN: ${{ needs.load_env.outputs.VERCEL_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ needs.load_env.outputs.SLACK_WEBHOOK_URL }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
   # 📬 Always notify, even if deploy or test_scan fails
   notify:
