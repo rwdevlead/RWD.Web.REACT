@@ -1,11 +1,12 @@
-name: Test, Scan & Deploy Monorepo to Vercel
+# name: Test, Scan & Deploy Monorepo to Vercel
 
-on:
-  push:
-    branches:
-      - main
-      - feature/** # deploy previews for feature branches
-  workflow_dispatch:
+# 🔒 Temporarily disabled during workflow split testing
+# on:
+#   push:
+#     branches:
+#       - main
+#       - feature/** # deploy previews for feature branches
+#   workflow_dispatch:
 
 jobs:
   vercel_deploy:
@@ -152,12 +153,12 @@ jobs:
 
           # Compose link message
           if [ -n "$DEPLOY_URL" ]; then
-            LINK_MSG="<br>🌐 <a href='$DEPLOY_URL'>View Vercel Deployment</a>"
+            LINK_MSG="🌐 <a href='$DEPLOY_URL'>View Vercel Deployment</a>"
           else
             LINK_MSG=""
           fi
 
-          GH_LINK_MSG="<br>🐙 <a href='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'>View GitHub Workflow</a>"
+          GH_LINK_MSG="🐙 <a href='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'>View GitHub Workflow</a>"
 
           # Choose the right emoji for each status
           GH_EMOJI=$( [[ "$GH_STATUS" == "success" ]] && echo "✅" || echo "❌" )

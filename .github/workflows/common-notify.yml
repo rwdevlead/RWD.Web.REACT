@@ -1,0 +1,54 @@
+# .github/workflows/common-notify.yml
+name: Common - Notify
+on:
+  workflow_call:
+    inputs:
+      gh_status:
+        required: true
+        type: string
+      deploy_status:
+        required: true
+        type: string
+      deploy_url:
+        required: false
+        type: string
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send notification via EmailJS
+        run: |
+          GH_STATUS="${{ inputs.gh_status }}"
+          DEPLOY_STATUS="${{ inputs.deploy_status }}"
+          DEPLOY_URL="${{ inputs.deploy_url }}"
+
+          if [ -n "$DEPLOY_URL" ]; then
+            LINK_MSG="🌐 <a href='$DEPLOY_URL'>View Vercel Deployment</a>"
+          else
+            LINK_MSG=""
+          fi
+
+          GH_LINK_MSG="🐙 <a href='${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'>View GitHub Workflow</a>"
+          GH_EMOJI=$( [[ "$GH_STATUS" == "success" ]] && echo "✅" || echo "❌" )
+          DEPLOY_EMOJI=$( [[ "$DEPLOY_STATUS" == "success" ]] && echo "✅" || echo "❌" )
+
+          MESSAGE="<b>GitHub Action:</b> ${{ github.workflow }}<br>\
+          <b>Repository:</b> ${{ github.repository }}<br>\
+          <b>Branch:</b> ${{ github.ref_name }}<br><br>\
+          <b>GitHub Job:</b> $GH_EMOJI <b>$GH_STATUS</b> $GH_LINK_MSG<br>\
+          <b>Vercel Deploy:</b> $DEPLOY_EMOJI <b>$DEPLOY_STATUS</b> $LINK_MSG"
+
+          curl -X POST https://api.emailjs.com/api/v1.0/email/send \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"service_id\": \"${{ secrets.EMAILJS_SERVICE_ID }}\",
+              \"template_id\": \"${{ secrets.EMAILJS_AR_TEMPLATE_ID }}\",
+              \"user_id\": \"${{ secrets.EMAILJS_PUBLICKEY }}\",
+              \"accessToken\": \"${{ secrets.EMAILJS_ACCESSTOKEN }}\",
+              \"template_params\": {
+                \"to_email\": \"${{ secrets.RWD_EMAIL_TO }}\",
+                \"subject\": \"🚀 Vercel Deploy $DEPLOY_STATUS\",
+                \"message\": \"$MESSAGE\"
+              }
+            }"
