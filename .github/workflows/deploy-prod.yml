@@ -64,7 +64,11 @@ jobs:
           vercel env rm EMAILJS_URL production --yes --token=${{ secrets.VERCEL_TOKEN }} || true
           echo ${{ vars.EMAILJS_URL }} | vercel env add EMAILJS_URL production --token=${{ secrets.VERCEL_TOKEN }}
         env:
-          <<: ${{ fromJSON(needs.load_env.outputs.env_json) }}
+          NODE_VERSION: ${{ needs.load_env.outputs.NODE_VERSION }}
+          VERCEL_ORG_ID: ${{ needs.load_env.outputs.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ needs.load_env.outputs.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ needs.load_env.outputs.VERCEL_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ needs.load_env.outputs.SLACK_WEBHOOK_URL }}
 
       # 🚀 Step 4 — Build Release just prior to deploy.
       # ⛔ If Release Process fails → there will be no deploy.
@@ -90,14 +94,19 @@ jobs:
             echo "deploy_status=failure" >> $GITHUB_OUTPUT
           fi
         env:
-          <<: ${{ fromJSON(needs.load_env.outputs.env_json) }}
+          NODE_VERSION: ${{ needs.load_env.outputs.NODE_VERSION }}
+          VERCEL_ORG_ID: ${{ needs.load_env.outputs.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ needs.load_env.outputs.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ needs.load_env.outputs.VERCEL_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ needs.load_env.outputs.SLACK_WEBHOOK_URL }}
 
   # 📬 Always notify, even if deploy or test_scan fails
   notify:
     if: always() # ✅ ensures this runs regardless of failure
-    needs: [test_scan, deploy]
+    needs: [load_env, test_scan, deploy]
     uses: ./.github/workflows/common-notify.yml
     with:
       gh_status: ${{ needs.deploy.result }}
       deploy_status: ${{ needs.deploy.outputs.deploy_status }}
       deploy_url: ${{ needs.deploy.outputs.deploy_url }}
+    secrets: inherit

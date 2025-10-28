@@ -18,6 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send notification via EmailJS
+        env:
+          EMAILJS_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
+          EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_CU_TEMPLATE_ID }}
+          EMAILJS_PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLICKEY }}
+          EMAILJS_ACCESS_TOKEN: ${{ secrets.EMAILJS_ACCESSTOKEN }}
+          RWD_EMAIL_TO: ${{ secrets.RWD_EMAIL_TO }}
         run: |
           GH_STATUS="${{ inputs.gh_status }}"
           DEPLOY_STATUS="${{ inputs.deploy_status }}"
@@ -42,12 +48,12 @@ jobs:
           curl -X POST https://api.emailjs.com/api/v1.0/email/send \
             -H 'Content-Type: application/json' \
             -d "{
-              \"service_id\": \"${{ secrets.EMAILJS_SERVICE_ID }}\",
-              \"template_id\": \"${{ secrets.EMAILJS_AR_TEMPLATE_ID }}\",
-              \"user_id\": \"${{ secrets.EMAILJS_PUBLICKEY }}\",
-              \"accessToken\": \"${{ secrets.EMAILJS_ACCESSTOKEN }}\",
+              \"service_id\": \"$EMAILJS_SERVICE_ID\",
+              \"template_id\": \"$EMAILJS_TEMPLATE_ID\",
+              \"user_id\": \"$EMAILJS_PUBLIC_KEY\",
+              \"accessToken\": \"$EMAILJS_ACCESS_TOKEN\",
               \"template_params\": {
-                \"to_email\": \"${{ secrets.RWD_EMAIL_TO }}\",
+                \"to_email\": \"$RWD_EMAIL_TO\",
                 \"subject\": \"🚀 Vercel Deploy $DEPLOY_STATUS\",
                 \"message\": \"$MESSAGE\"
               }
