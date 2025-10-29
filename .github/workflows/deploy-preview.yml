@@ -1,0 +1,129 @@
+# .github/workflows/deploy-preview.yml
+name: Deploy Preview to Vercel
+
+on:
+  push:
+    branches-ignore:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test_scan:
+    uses: ./.github/workflows/common-test-scan.yml
+    permissions:
+      security-events: write
+
+  deploy:
+    needs: test_scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+    outputs:
+      deploy_url: ${{ steps.vercel_deploy.outputs.deploy_url }}
+      deploy_status: ${{ steps.vercel_deploy.outputs.deploy_status }}
+    steps:
+      # ✅ Step 1 — Checkout repo
+      # Runs unless checkout action itself fails (rare).
+      - uses: actions/checkout@v4
+
+      # ✅ Step 2 — Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      # ✅ Step 3 — Install Vercel CLI
+      # ⛔ If npm install fails (e.g., network or permissions issue),
+      #    the remaining steps (sync + deploy) will NOT run.
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      # ✅ Step 4 — Sync Preview Environment
+      # Safe: each variable removal/addition uses `|| true`
+      # ✅ Even if one fails, the step continues.
+      # ⛔ However, if the entire script exits nonzero for another reason,
+      #    the deploy step below will NOT run.
+      - name: Sync Preview Environment
+        run: |
+          echo "Syncing Preview Secrets ..."
+          vercel env rm VITE_RECAPTCHA_SITE_KEY preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          echo ${{ secrets.VITE_RECAPTCHA_SITE_KEY }} | vercel env add VITE_RECAPTCHA_SITE_KEY preview --token=${{ secrets.VERCEL_TOKEN }}
+
+          vercel env rm EMAILJS_ACCESSTOKEN preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          echo ${{ secrets.EMAILJS_ACCESSTOKEN }} | vercel env add EMAILJS_ACCESSTOKEN preview --token=${{ secrets.VERCEL_TOKEN }}
+
+          vercel env rm EMAILJS_PUBLICKEY preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          echo ${{ secrets.EMAILJS_PUBLICKEY }} | vercel env add EMAILJS_PUBLICKEY preview --token=${{ secrets.VERCEL_TOKEN }}
+
+          vercel env rm EMAILJS_SERVICE_ID preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          echo ${{ secrets.EMAILJS_SERVICE_ID }} | vercel env add EMAILJS_SERVICE_ID preview --token=${{ secrets.VERCEL_TOKEN }}
+
+          vercel env rm EMAILJS_CU_TEMPLATE_ID preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          echo ${{ secrets.EMAILJS_CU_TEMPLATE_ID }} | vercel env add EMAILJS_CU_TEMPLATE_ID preview --token=${{ secrets.VERCEL_TOKEN }}
+
+          vercel env rm EMAILJS_URL preview --yes --token=${{ secrets.VERCEL_TOKEN }} || true
+          echo ${{ vars.EMAILJS_URL }} | vercel env add EMAILJS_URL preview --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      # 🚀 Step 5 — Build Release just prior to deploy.
+      # ⛔ If Release Process fails → there will be no deploy.
+      - name: Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm install --save-dev \
+            semantic-release \
+            @semantic-release/git \
+            @semantic-release/changelog \
+            @semantic-release/commit-analyzer \
+            @semantic-release/release-notes-generator
+          npx semantic-release
+
+      # 🚀 Step 6 — Deploy to Vercel (Preview)
+      # `set -e` stops execution if *any* line fails.
+      # ⛔ If `vercel deploy` command fails → job exits immediately.
+      - name: Deploy to Vercel (Preview)
+        id: vercel_deploy
+        run: |
+          set -e
+          DEPLOY_EXIT=0
+          DEPLOY_URL=""
+
+          echo "Deploying to Preview..."
+          vercel pull --yes --environment=preview --token="${{ secrets.VERCEL_TOKEN }}"
+          vercel build --token="${{ secrets.VERCEL_TOKEN }}"
+          DEPLOY_OUTPUT=$(vercel deploy --prebuilt --token="${{ secrets.VERCEL_TOKEN }}" 2>&1) || DEPLOY_EXIT=$?
+
+          echo "$DEPLOY_OUTPUT"
+
+          # Extract deploy URL from Vercel output (last HTTP(s) link)
+          # Grab the Inspect URL from Vercel CLI output
+          DEPLOY_URL=$(echo "$DEPLOY_OUTPUT" | grep '^Inspect:' | awk '{print $2}' || true)
+
+          # Set outputs for GitHub Actions
+          echo "deploy_url=$DEPLOY_URL" >> $GITHUB_OUTPUT
+          if [[ $DEPLOY_EXIT -eq 0 && -n "$DEPLOY_URL" ]]; then
+            echo "deploy_status=success" >> $GITHUB_OUTPUT
+          else
+            echo "deploy_status=failure" >> $GITHUB_OUTPUT
+          fi
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+  # 📬 Always notify, even if deploy or test_scan fails
+  notify:
+    if: always() # ✅ ensures this runs regardless of failure
+    needs: [test_scan, deploy]
+    uses: ./.github/workflows/common-notify.yml
+    with:
+      gh_status: ${{ needs.deploy.result }}
+      deploy_status: ${{ needs.deploy.outputs.deploy_status }}
+      deploy_url: ${{ needs.deploy.outputs.deploy_url }}
+    secrets: inherit
