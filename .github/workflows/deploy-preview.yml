@@ -68,7 +68,14 @@ jobs:
       - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+        run: |
+          npm install --save-dev \
+            semantic-release \
+            @semantic-release/git \
+            @semantic-release/changelog \
+            @semantic-release/commit-analyzer \
+            @semantic-release/release-notes-generator
+          npx semantic-release
 
       # 🚀 Step 5 — Deploy to Vercel (Preview)
       # `set -e` stops execution if *any* line fails.

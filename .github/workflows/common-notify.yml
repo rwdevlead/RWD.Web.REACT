@@ -49,9 +49,9 @@ jobs:
             -H 'Content-Type: application/json' \
             -d "{
               \"service_id\": \"$EMAILJS_SERVICE_ID\",
-              \"template_id\": \"$EMAILJS_TEMPLATE_ID\",
-              \"user_id\": \"$EMAILJS_PUBLIC_KEY\",
-              \"accessToken\": \"$EMAILJS_ACCESS_TOKEN\",
+              \"template_id\": \"$EMAILJS_AR_TEMPLATE_ID\",
+              \"user_id\": \"$EMAILJS_PUBLICKEY\",
+              \"accessToken\": \"$EMAILJS_ACCESSTOKEN\",
               \"template_params\": {
                 \"to_email\": \"$RWD_EMAIL_TO\",
                 \"subject\": \"🚀 Vercel Deploy $DEPLOY_STATUS\",
