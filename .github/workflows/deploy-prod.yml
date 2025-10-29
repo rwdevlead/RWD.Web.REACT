@@ -28,13 +28,20 @@ jobs:
       # Runs unless checkout action itself fails (rare).
       - uses: actions/checkout@v4
 
-      # ✅ Step 2 — Install Vercel CLI
+      # ✅ Step 2 — Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      # ✅ Step 3 — Install Vercel CLI
       # ⛔ If npm install fails (e.g., network or permissions issue),
       #    the remaining steps (sync + deploy) will NOT run.
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
-      # ✅ Step 3 — Sync Preview Environment
+      # ✅ Step 4 — Sync Preview Environment
       # Safe: each variable removal/addition uses `|| true`
       # ✅ Even if one fails, the step continues.
       # ⛔ However, if the entire script exits nonzero for another reason,
@@ -63,7 +70,7 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      # 🚀 Step 4 — Build Release just prior to deploy.
+      # 🚀 Step 5 — Build Release just prior to deploy.
       # ⛔ If Release Process fails → there will be no deploy.
       - name: Semantic Release
         env:
@@ -77,7 +84,7 @@ jobs:
             @semantic-release/release-notes-generator
           npx semantic-release
 
-      # 🚀 Step 5 — Deploy to Vercel (Preview)
+      # 🚀 Step 6 — Deploy to Vercel (Preview)
       # `set -e` stops execution if *any* line fails.
       # ⛔ If `vercel deploy` command fails → job exits immediately.
       - name: Deploy to Vercel (Production)
