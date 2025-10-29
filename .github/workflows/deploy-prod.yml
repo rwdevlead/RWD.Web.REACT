@@ -91,11 +91,23 @@ jobs:
         id: vercel_deploy
         run: |
           set -e
-          DEPLOY_OUTPUT=$(vercel deploy --prebuilt --prod --token="${{ secrets.VERCEL_TOKEN }}" 2>&1)
+          DEPLOY_EXIT=0
+          DEPLOY_URL=""
+
+          echo "Deploying to Production..."
+          vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
+          vercel build --prod --token="${{ secrets.VERCEL_TOKEN }}"
+          DEPLOY_OUTPUT=$(vercel deploy --prebuilt --prod --token="${{ secrets.VERCEL_TOKEN }}" 2>&1) || DEPLOY_EXIT=$?
+
           echo "$DEPLOY_OUTPUT"
+
+          # Extract deploy URL from Vercel output (last HTTP(s) link)
+          # Grab the Inspect URL from Vercel CLI output
           DEPLOY_URL=$(echo "$DEPLOY_OUTPUT" | grep '^Inspect:' | awk '{print $2}' || true)
+
+          # Set outputs for GitHub Actions
           echo "deploy_url=$DEPLOY_URL" >> $GITHUB_OUTPUT
-          if [[ -n "$DEPLOY_URL" ]]; then
+          if [[ $DEPLOY_EXIT -eq 0 && -n "$DEPLOY_URL" ]]; then
             echo "deploy_status=success" >> $GITHUB_OUTPUT
           else
             echo "deploy_status=failure" >> $GITHUB_OUTPUT
