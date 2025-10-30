@@ -1,8 +1,27 @@
-# Modern React Portfolio with Advanced CI/CD
+# Portfolio Frontend Application
 
-A technically sophisticated portfolio website built with modern web technologies and DevOps best practices. This project showcases not just the visual portfolio elements, but also demonstrates expertise in modern web development architecture, testing, and deployment automation.
+A modern, performance-optimized React portfolio showcasing technical expertise through both its content and implementation. Built with cutting-edge web technologies and focusing on developer experience, testing, and maintainability.
 
 ## 🏗 Technical Architecture
+
+### Component Architecture
+
+- **Layout System**:
+  - Responsive grid system
+  - Mobile-first approach
+  - Fluid typography scaling
+- **Core Components**:
+  - `DarkModeToggle`: Theme switching with system preference detection
+  - `LoadingScreen`: Optimized loading states
+  - `MobileMenu`: Responsive navigation
+  - `Navbar`: Dynamic header with scroll behavior
+  - `RevealOnScroll`: Performance-optimized scroll animations
+- **Section Components**:
+  - `Home`: Dynamic hero section
+  - `About`: Tech stack showcase
+  - `Projects`: Portfolio display
+  - `Contact`: Form with validation
+  - `Footer`: Site navigation and social links
 
 ### Frontend Stack
 
@@ -42,6 +61,23 @@ A technically sophisticated portfolio website built with modern web technologies
   - Deployment notifications
 
 ## 🚀 Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Run tests
+npm run test
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
 
 ## 🔧 Development Workflow
 
